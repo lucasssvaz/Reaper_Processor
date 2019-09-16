@@ -1,0 +1,42 @@
+Quartus Prime Archive log --	C:/Users/lucas/Desktop/Backup/Processador_Quartus/Reaper_Processor.qarlog
+
+Archive:	C:/Users/lucas/Desktop/Backup/Processador_Quartus/Reaper_Processor.qar
+Date:		Wed Jul 10 20:30:41 2019
+Quartus Prime		18.1.0 Build 625 09/12/2018 SJ Lite Edition
+
+	=========== Files Selected: ===========
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/ALU.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/ClockManager.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Ctrl_Module.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Debounce.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Extend_Imm.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/IO_Module.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Mux32.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Mux6.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Mux8.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Program_Counter.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/RAM.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/ROM.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Reaper_Processor.qpf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Reaper_Processor.qsf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Reaper_Processor.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/RegFile.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/StackFile.v
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_ALU.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_CM.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_Ctrl.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_IO.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_Imm.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_MUX.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_PC.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_RAM.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_ROM.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_Reaper.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_RegFile.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/Waveform_Stack.vwf
+C:/Users/lucas/Desktop/Backup/Processador_Quartus/single_port_rom_init.txt
+c:/intelfpga_lite/18.1/quartus/bin64/assignment_defaults.qdf
+	======= Total: 31 files to archive =======
+
+	================ Status: ===============
+All files archived successfully.
