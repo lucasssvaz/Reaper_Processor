@@ -1,10 +1,10 @@
 module ALU
 (
 	output reg True,
-	output reg [31:0] Result,
+	output reg signed [31:0] Result,
 	input Fast_Clock,
-	input [31:0] Data_1,
-	input [31:0] Data_2,
+	input signed [31:0] Data_1,
+	input signed [31:0] Data_2,
 	input [4:0] ALU_Op
 );
 
@@ -68,13 +68,13 @@ begin
 		
 		9:		//Shift Left
 		begin
-			Result = Data_1 << Data_2;
+			Result = Data_1 <<< Data_2;
 			True = 0;
 		end
 		
 		10:	//Shift Right
 		begin
-			Result = Data_1 >> Data_2;
+			Result = Data_1 >>> Data_2;
 			True = 0;
 		end
 		

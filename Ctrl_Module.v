@@ -4,13 +4,14 @@ module Ctrl_Module
 	output reg IO_Enable,
 	output reg IO_Selection,
 	output reg Reg_Write,
-	output reg R_Type,
-	output reg Jump,
+	//output reg R_Type,
+	output reg Jump_R,
+	output reg Jump_I,
 	output reg Stack_Enable,
 	output reg Stack_Write,
 	output reg Branch,
 	output reg Mem_Write,
-	output reg W_Only,
+	//output reg W_Only,
 	output reg Mem_To_Reg,
 	output reg [4:0] ALU_Op,
 	output reg ALU_Src,
@@ -29,13 +30,12 @@ begin
 			IO_Enable = 0;
 			IO_Selection = 0;
 			Reg_Write = 1;
-			R_Type = 1;
-			Jump = 0;
+			Jump_R = 0;
+			Jump_I = 0;
 			Stack_Enable = 0;
 			Stack_Write = 0;
 			//Branch
 			Mem_Write = 0;
-			W_Only = 0;
 			Mem_To_Reg = 0;
 			//ALU_Op
 			ALU_Src = 0;
@@ -159,13 +159,12 @@ begin
 			IO_Enable = 0;
 			IO_Selection = 0;
 			Reg_Write = 1;
-			R_Type = 1;
-			Jump = 0;
+			Jump_R = 0;
+			Jump_I = 0;
 			Stack_Enable = 0;
 			Stack_Write = 0;
 			//Branch
 			Mem_Write = 0;
-			W_Only = 0;
 			Mem_To_Reg = 0;
 			//ALU_Op
 			ALU_Src = 0;
@@ -197,6 +196,18 @@ begin
 					Branch = 0;
 					ALU_Op = 7;
 				end
+
+				4'b0100: //STGE
+				begin
+					Branch = 0;
+					ALU_Op = 13;
+				end
+
+				4'b0101: //STLE
+				begin
+					Branch = 0;
+					ALU_Op = 15;
+				end
 				
 				default:
 				begin
@@ -214,13 +225,12 @@ begin
 			//IO_Enable
 			//IO_Selection
 			//Reg_Write
-			R_Type = 0;
-			//Jump
+			//Jump_R
+			//Jump_I
 			//Stack_Enable
 			//Stack_Write
 			Branch = 0;
 			Mem_Write = 0;
-			//W_Only
 			Mem_To_Reg = 0;
 			ALU_Op = 18;
 			ALU_Src = 1;
@@ -234,10 +244,10 @@ begin
 					IO_Enable = 1;
 					IO_Selection = 0;
 					Reg_Write = 1;
-					Jump = 0;
+					Jump_R = 0;
+					Jump_I = 0;
 					Stack_Enable = 0;
 					Stack_Write = 0;
-					W_Only = 1;
 				end
 
 				4'b0001: //JAL
@@ -245,10 +255,10 @@ begin
 					IO_Enable = 0;
 					IO_Selection = 0;
 					Reg_Write = 0;
-					Jump = 1;
+					Jump_R = 0;
+					Jump_I = 1;
 					Stack_Enable = 1;
 					Stack_Write = 1;
-					W_Only = 0;
 				end
 
 				4'b0010: //JR
@@ -256,10 +266,10 @@ begin
 					IO_Enable = 0;
 					IO_Selection = 0;
 					Reg_Write = 0;
-					Jump = 1;
+					Jump_R = 1;
+					Jump_I = 0;
 					Stack_Enable = 0;
 					Stack_Write = 0;
-					W_Only = 0;
 				end
 
 				4'b0011: //LI
@@ -267,10 +277,10 @@ begin
 					IO_Enable = 0;
 					IO_Selection = 0;
 					Reg_Write = 1;
-					Jump = 0;
+					Jump_R = 0;
+					Jump_I = 0;
 					Stack_Enable = 0;
 					Stack_Write = 0;
-					W_Only = 1;
 				end
 
 				4'b0100: //OUT
@@ -278,10 +288,10 @@ begin
 					IO_Enable = 1;
 					IO_Selection = 1;
 					Reg_Write = 0;
-					Jump = 0;
+					Jump_R = 0;
+					Jump_I = 0;
 					Stack_Enable = 0;
 					Stack_Write = 0;
-					W_Only = 0;
 				end
 
 				4'b0101: //RET
@@ -289,10 +299,21 @@ begin
 					IO_Enable = 0;
 					IO_Selection = 0;
 					Reg_Write = 0;
-					Jump = 0;
+					Jump_R = 0;
+					Jump_I = 0;
 					Stack_Enable = 1;
 					Stack_Write = 0;
-					W_Only = 0;
+				end
+
+				4'b0110: //J
+				begin
+					IO_Enable = 0;
+					IO_Selection = 0;
+					Reg_Write = 0;
+					Jump_R = 0;
+					Jump_I = 1;
+					Stack_Enable = 0;
+					Stack_Write = 0;
 				end
 
 				default:
@@ -300,10 +321,10 @@ begin
 					IO_Enable = 0;
 					IO_Selection = 0;
 					Reg_Write = 0;
-					Jump = 0;
+					Jump_R = 0;
+					Jump_I = 0;
 					Stack_Enable = 0;
 					Stack_Write = 0;
-					W_Only = 0;
 				end
 
 			endcase
@@ -316,13 +337,12 @@ begin
 			IO_Enable = 0;
 			IO_Selection = 0;
 			//Reg_Write
-			R_Type = 0;
-			Jump = 0;
+			Jump_R = 0;
+			Jump_I = 0;
 			Stack_Enable = 0;
 			Stack_Write = 0;
 			Branch = 0;
 			//Mem_Write
-			W_Only = 0;
 			//Mem_To_Reg
 			//ALU_Op
 			ALU_Src = 1;
@@ -470,13 +490,12 @@ begin
 			IO_Enable = 0;
 			IO_Selection = 0;
 			Reg_Write = 0;
-			R_Type = 0;
-			Jump = 0;
+			Jump_R = 0;
+			Jump_I = 0;
 			Stack_Enable = 0;
 			Stack_Write = 0;
 			Branch = 0;
 			Mem_Write = 0;
-			W_Only = 0;
 			Mem_To_Reg = 0;
 			ALU_Op = 0;
 			ALU_Src = 0;

@@ -1,4 +1,4 @@
-module IO_Module (input Slow_Clock, input Reset, input Enable, input IO, input Confirm, output reg [31:0] Data_In, input [31:0] Data_Out, output reg [31:0] Data_Debug, input [17:0] Raw_Input, output reg Interrupt, output reg [6:0] Display0, output reg [6:0] Display1, output reg [6:0] Display2, output reg [6:0] Display3, output reg [6:0] Display4, output reg [6:0] Display5, output reg [6:0] Display6, output reg [6:0] Display7);
+module IO_Module (input Slow_Clock, input Reset, input Enable, input IO, input Confirm, output reg signed [31:0] Data_In, input signed [31:0] Data_Out, output reg signed [31:0] Data_Debug, input signed [17:0] Raw_Input, output reg Interrupt, output reg [6:0] Display0, output reg [6:0] Display1, output reg [6:0] Display2, output reg [6:0] Display3, output reg [6:0] Display4, output reg [6:0] Display5, output reg [6:0] Display6, output reg [6:0] Display7);
 
 reg State = 0;
 wire In_Op;
@@ -44,7 +44,7 @@ always @ (negedge Confirm)
 begin
 	if (Enable && (!IO))
 	begin
-		Data_In = {{14{1'b0}},Raw_Input};
+		Data_In = {{14{Raw_Input[17]}},Raw_Input};
 	end
 end
 

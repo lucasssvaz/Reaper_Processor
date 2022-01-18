@@ -1,5 +1,5 @@
 module ClockManager
-#(parameter N_COUNT = 25000000)
+#(parameter N_COUNT = 3)
 (
 	input Reset, Clk,
 	output reg New_Clock
