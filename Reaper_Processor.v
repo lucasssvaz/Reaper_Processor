@@ -2,7 +2,7 @@ module Reaper_Processor
 (
 	input Raw_Button_I,
 	input signed [17:0] Raw_Input,
-	input Sys_Clock,
+	input Fast_Clock,
 	input Raw_Reset_I,
 	output [6:0] Display0,
 	output [6:0] Display1,
@@ -22,7 +22,7 @@ module Reaper_Processor
 	output signed [31:0] Out_Int,
 	output [12:0] PC,
 	output [31:0] Instruction,
-	output Clock
+	output Slow_Clock
 );
 
 
@@ -91,43 +91,163 @@ end
 
 //======================================================================================
 
-Program_Counter Program_Counter0 (.Interrupt(Interrupt), .Reset(Reset), .Sys_Clock(Clock), .Halt(Halt), .NextPC(NextPC), .PC(PC));
+Program_Counter Program_Counter0 (
+	.Interrupt(Interrupt),
+	.Reset(Reset),
+	.Slow_Clock(Slow_Clock),
+	.Halt(Halt),
+	.NextPC(NextPC),
+	.PC(PC)
+);
 
-ROM ROM0 (.PC(PC), .Sys_Clock(Sys_Clock), .Instruction(Instruction));
+ROM ROM0 (
+	.PC(PC),
+	.Fast_Clock(Fast_Clock), 
+	.Instruction(Instruction)
+);
 
-ClockManager ClockManager0 (.Reset(Reset), .Clk(Sys_Clock), .New_Clock(Clock));
+ClockManager ClockManager0 (
+	.Reset(Reset), 
+	.Fast_Clock(Fast_Clock), 
+	.Slow_Clock(Slow_Clock)
+);
 
-Ctrl_Module Ctrl_Module0 (Instruction[31:26], IO_Enable, IO_Selection, Reg_Write, Jump_R, Jump_I, Stack_Enable, Stack_Write, Branch, Mem_Write, Mem_To_Reg, ALU_Op, ALU_Src, Halt, Long_Imm);
+Ctrl_Module Ctrl_Module0 (
+	.Instruction(Instruction[31:26]), 
+	.IO_Enable(IO_Enable), 
+	.IO_Selection(IO_Selection), 
+	.Reg_Write(Reg_Write), 
+	.Jump_R(Jump_R), 
+	.Jump_I(Jump_I), 
+	.Stack_Enable(Stack_Enable), 
+	.Stack_Write(Stack_Write), 
+	.Branch(Branch), 
+	.Mem_Write(Mem_Write), 
+	.Mem_To_Reg(Mem_To_Reg), 
+	.ALU_Op(ALU_Op), 
+	.ALU_Src(ALU_Src), 
+	.Halt(Halt), 
+	.Long_Imm(Long_Imm)
+);
 
-RegFile RegFile0 (DebugSP, DebugGP, DebugJMP, DebugRA, DebugRET, DebugBR, Reset, Clock, Sys_Clock, Reg_Write, Reg_Write_Data, Instruction[25:20], Instruction[19:14], Instruction[13:8], Data_1, Data_2, Data_3);
+RegFile RegFile0 (
+	.DebugSP(DebugSP), 
+	.DebugGP(DebugGP), 
+	.DebugJMP(DebugJMP), 
+	.DebugRA(DebugRA), 
+	.DebugRET(DebugRET), 
+	.DebugBR(DebugBR), 
+	.Reset(Reset), 
+	.Slow_Clock(Slow_Clock), 
+	.Fast_Clock(Fast_Clock), 
+	.Reg_Write(Reg_Write), 
+	.Write_Data(Reg_Write_Data), 
+	.Reg_1(Instruction[25:20]), 
+	.Reg_2(Instruction[19:14]), 
+	.Reg_3(Instruction[13:8]), 
+	.Data_1(Data_1), 
+	.Data_2(Data_2), 
+	.Data_3(Data_3)
+);
 
-Extend_Imm Extend_Imm0 (Instruction[19:0], Long_Imm, Out_Imm);
+Extend_Imm Extend_Imm0 (
+	.In_Imm(Instruction[19:0]), 
+	.Long_Imm(Long_Imm), 
+	.Out_Imm(Out_Imm)
+);
 
-ALU ALU0 (ALU_True, ALU_Result, Sys_Clock, Data_2, ALU_Data_3, ALU_Op);
+ALU ALU0 (
+	.True(ALU_True), 
+	.Result(ALU_Result), 
+	.Fast_Clock(Fast_Clock), 
+	.Input_1(Data_2), 
+	.Input_2(ALU_Data_3), 
+	.ALU_Op(ALU_Op)
+);
 
-Mux32 Mux_ALU (.Switch(ALU_Src), .Data_0(Data_3), .Data_1(Out_Imm), .Data_Out(ALU_Data_3));
+StackFile StackFile0 (
+	.Reset(Reset), 
+	.Slow_Clock(Slow_Clock), 
+	.Stack_Write(Stack_Write), 
+	.Stack_Enable(Stack_Enable), 
+	.NPPC(NPPC), 
+	.Ret_Add(Ret_Add), 
+	.Err_Out(Err_Out)
+);
 
-StackFile StackFile0 (Reset, Clock, Stack_Write, Stack_Enable, NPPC, Ret_Add, Err_Out);
+RAM RAM0 (
+	.Write_Data(Data_1), 
+	.Address(ALU_Result[15:0]), 
+	.Mem_Write(Mem_Write), 
+	.Fast_Clock(Fast_Clock), 
+	.Slow_Clock(Slow_Clock), 
+	.Read_Data(Mem_Out)
+);
 
-RAM RAM0 (Data_1, ALU_Result[15:0], Mem_Write, Sys_Clock, Clock, Mem_Out);
+IO_Module IO_Module0 (
+	.Slow_Clock(Slow_Clock), 
+	.Reset(Reset), 
+	.Enable(IO_Enable), 
+	.IO(IO_Selection), 
+	.Confirm(Button), 
+	.Data_In(Data_In), 
+	.Data_Out(Data_1), 
+	.Data_Debug(Out_Int), 
+	.Raw_Input(Raw_Input), 
+	.Interrupt(Interrupt), 
+	.Display0(Display0), 
+	.Display1(Display1), 
+	.Display2(Display2), 
+	.Display3(Display3), 
+	.Display4(Display4), 
+	.Display5(Display5), 
+	.Display6(Display6), 
+	.Display7(Display7)
+);
 
-Mux32 Mux_Mem (.Switch(Mem_To_Reg), .Data_0(ALU_Result), .Data_1(Mem_Out), .Data_Out(Data_From_Mem));
+Mux32 Mux_Mem (
+	.Switch(Mem_To_Reg), 
+	.Data_0(ALU_Result), 
+	.Data_1(Mem_Out), 
+	.Data_Out(Data_From_Mem)
+);
 
-IO_Module IO_Module0 (Clock, Reset, IO_Enable, IO_Selection, Button, Data_In, Data_1, Out_Int, Raw_Input, Interrupt, Display0, Display1, Display2, Display3, Display4, Display5, Display6, Display7);
+Mux32 Mux_ALU (
+	.Switch(ALU_Src), 
+	.Data_0(Data_3), 
+	.Data_1(Out_Imm), 
+	.Data_Out(ALU_Data_3)
+);
 
-//Debounce DB0 (Sys_Clock, 0, Raw_Button, Button);
+Mux32 Mux_IO (
+	.Switch(IO_Enable), 
+	.Data_0(Data_From_Mem), 
+	.Data_1(Data_In), 
+	.Data_Out(Reg_Write_Data)
+);
 
-//Debounce DB1 (Sys_Clock, 0, Raw_Reset, Reset);
+Mux13 Mux_Branch (
+	.Switch(OR_Branch), 
+	.Data_0(NPPC), 
+	.Data_1(Data_1[12:0]), 
+	.Data_Out(Branch_Out)
+);
 
-//assign Reg_Write_Data = Data_From_Mem;
+Mux13 Mux_Jump (
+	.Switch(Jump_I), 
+	.Data_0(Branch_Out), 
+	.Data_1(Out_Imm[12:0]), 
+	.Data_Out(Jump_Out)
+);
 
-Mux32 Mux_IO (.Switch(IO_Enable), .Data_0(Data_From_Mem), .Data_1(Data_In), .Data_Out(Reg_Write_Data));
+Mux13 Mux_Stack (
+	.Switch(Stack_Mux_Control), 
+	.Data_0(Jump_Out), 
+	.Data_1(Ret_Add), 
+	.Data_Out(NextPC)
+);
 
-Mux13 Mux_Branch (.Switch(OR_Branch), .Data_0(NPPC), .Data_1(Data_1[12:0]), .Data_Out(Branch_Out));
-
-Mux13 Mux_Jump (.Switch(Jump_I), .Data_0(Branch_Out), .Data_1(Out_Imm[12:0]), .Data_Out(Jump_Out));
-
-Mux13 Mux_Stack (.Switch(Stack_Mux_Control), .Data_0(Jump_Out), .Data_1(Ret_Add), .Data_Out(NextPC));
-
+//Debounce DB0 (Fast_Clock, 0, Raw_Button, Button);
+//Debounce DB1 (Fast_Clock, 0, Raw_Reset, Reset);
 
 endmodule

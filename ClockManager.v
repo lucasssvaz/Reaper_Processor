@@ -1,23 +1,23 @@
 module ClockManager
-#(parameter N_COUNT = 3)
+#(parameter N_COUNT = 2500) //If N_COUNT is too low, the program might not work on the physical board
 (
-	input Reset, Clk,
-	output reg New_Clock
+	input Reset, Fast_Clock,
+	output reg Slow_Clock
 );
 
 initial
 begin
-	New_Clock = 1;
+	Slow_Clock = 1;
 end
 
 integer count = 0;
 
-always@(posedge Clk)
+always@(posedge Fast_Clock)
 begin
 	if (Reset)
 	begin
 		count <= 0;
-		New_Clock <= 1;
+		Slow_Clock <= 1;
 	end
 	else
 	begin		
@@ -27,7 +27,7 @@ begin
 		end
 		else begin
 			count <= 0;
-			New_Clock <= ~New_Clock;
+			Slow_Clock <= ~Slow_Clock;
 		end
 	end
 end

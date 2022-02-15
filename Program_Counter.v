@@ -1,4 +1,11 @@
-module Program_Counter (input Interrupt, input Reset, input Sys_Clock, input Halt, input [12:0] NextPC, output reg [12:0] PC);
+module Program_Counter (
+	input Interrupt, 
+	input Reset, 
+	input Slow_Clock, 
+	input Halt, 
+	input [12:0] NextPC, 
+	output reg [12:0] PC
+);
 
 reg Lock = 0;
 
@@ -10,7 +17,7 @@ begin
 		Lock = 0;
 end
 
-always @(posedge Sys_Clock) begin
+always @(posedge Slow_Clock) begin
 	if (Reset)
 	begin
 		PC = 0;
