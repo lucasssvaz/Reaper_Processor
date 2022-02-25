@@ -6,11 +6,14 @@ module ROM
 	output reg [(DATA_WIDTH-1):0] Instruction
 );
 
-	reg [DATA_WIDTH-1:0] rom[2**ADDR_WIDTH-1:0];
+	reg [DATA_WIDTH-1:0] rom[2047:0];
 
 	initial
 	begin
-		$readmemb("single_port_rom_init.txt", rom);
+		$readmemb("OS.txt", rom, 0, 511);
+		$readmemb("Proc1.txt", rom, 512, 1023);
+		$readmemb("Proc2.txt", rom, 1024, 1535);
+		$readmemb("Proc3.txt", rom, 1536, 2047);
 	end
 
 	always @ (posedge Fast_Clock)

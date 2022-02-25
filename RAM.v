@@ -7,7 +7,7 @@ module RAM
 	output reg [(DATA_WIDTH-1):0] Read_Data
 );
 	
-	reg [DATA_WIDTH-1:0] ram[2**ADDR_WIDTH-1:0];
+	reg [DATA_WIDTH-1:0] ram[1023:0];
 	
 	always @ (negedge Slow_Clock)
 	begin
