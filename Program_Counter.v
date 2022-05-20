@@ -1,9 +1,9 @@
 module Program_Counter (
-	input Interrupt, 
-	input Reset, 
-	input Slow_Clock, 
-	input Halt, 
-	input [12:0] NextPC, 
+	input Interrupt,
+	input Reset,
+	input Slow_Clock,
+	input Halt,
+	input [12:0] NextPC,
 	output reg [12:0] PC
 );
 
@@ -22,7 +22,7 @@ always @(posedge Slow_Clock) begin
 	begin
 		PC = 0;
 	end
-	else if (!Lock && !Interrupt) 
+	else if (!Lock && !Interrupt)
 	begin
 		PC = NextPC[12:0];
 	end

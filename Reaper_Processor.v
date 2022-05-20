@@ -85,7 +85,10 @@ module Reaper_Processor
 	output reg [1:0] Proc_ID,
 	output [12:0] Context_PC,
 	output [12:0] Mux_Stack_Out,
-	output Halt
+	output Halt,
+	input PS2_KB_Clk,
+	input PS2_KB_Data,
+	output reg [7:0] KB_Byte
 );
 
 
@@ -322,6 +325,12 @@ RAM RAM0 (
 	.Fast_Clock(Fast_Clock),
 	.Slow_Clock(Slow_Clock),
 	.Read_Data(Mem_Out)
+);
+
+PS2 PS20 (
+	.KB_Clk(PS2_KB_Clk),
+	.KB_Data(PS2_KB_Data),
+	.KB_Char(KB_Byte)
 );
 
 IO_Module IO_Module0 (
