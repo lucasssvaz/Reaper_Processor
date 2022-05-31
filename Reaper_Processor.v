@@ -78,6 +78,7 @@ module Reaper_Processor
     output signed [31:0] DebugAX1,
     output signed [31:0] DebugAX2,
     output signed [31:0] DebugCRT,
+	output [7:0] Debug_Kb_Byte,
 	output signed [31:0] Out_Int,
 	output [12:0] PC,
 	output [31:0] Instruction,
@@ -87,8 +88,7 @@ module Reaper_Processor
 	output [12:0] Mux_Stack_Out,
 	output Halt,
 	input PS2_KB_Clk,
-	input PS2_KB_Data,
-	output reg [7:0] KB_Byte
+	input PS2_KB_Data
 );
 
 
@@ -102,7 +102,7 @@ reg [12:0] NPPC;
 wire [12:0] NextPC;
 wire Interrupt;
 wire IO_Enable;
-wire IO_Selection;
+wire [1:0] IO_Selection;
 wire Reg_Write;
 wire Jump_R;
 wire Jump_I;
@@ -134,9 +134,12 @@ reg Stack_Mux_Control;
 wire signed [31:0] Mem_Out;
 wire Reset;
 reg [12:0] Proc_PC[3:0];
+reg [7:0] Kb_Byte;
 
 
 //======================================================================================
+
+assign Debug_Kb_Byte = Kb_Byte;
 
 initial
 begin
@@ -175,7 +178,7 @@ end
 
 //======================================================================================
 
-Program_Counter Program_Counter0 (
+Program_Counter Program_Counter_0 (
 	.Interrupt(Interrupt),
 	.Reset(Reset),
 	.Slow_Clock(Slow_Clock),
@@ -184,19 +187,19 @@ Program_Counter Program_Counter0 (
 	.PC(PC)
 );
 
-ROM ROM0 (
+ROM ROM_0 (
 	.PC(PC),
 	.Fast_Clock(Fast_Clock),
 	.Instruction(Instruction)
 );
 
-ClockManager ClockManager0 (
+ClockManager ClockManager_0 (
 	.Reset(Reset),
 	.Fast_Clock(Fast_Clock),
 	.Slow_Clock(Slow_Clock)
 );
 
-Ctrl_Module Ctrl_Module0 (
+Ctrl_Module Ctrl_Module_0 (
 	.Instruction(Instruction[31:26]),
 	.IO_Enable(IO_Enable),
 	.IO_Selection(IO_Selection),
@@ -215,7 +218,7 @@ Ctrl_Module Ctrl_Module0 (
 	.Change_Context(Change_Context)
 );
 
-RegFile RegFile0 (
+RegFile RegFile_0 (
 	.DebugZERO(DebugZERO),
 	.DebugT0(DebugT0),
 	.DebugT1(DebugT1),
@@ -293,13 +296,13 @@ RegFile RegFile0 (
 	.Data_3(Data_3)
 );
 
-Extend_Imm Extend_Imm0 (
+Extend_Imm Extend_Imm_0 (
 	.In_Imm(Instruction[19:0]),
 	.Long_Imm(Long_Imm),
 	.Out_Imm(Out_Imm)
 );
 
-ALU ALU0 (
+ALU ALU_0 (
 	.True(ALU_True),
 	.Result(ALU_Result),
 	.Fast_Clock(Fast_Clock),
@@ -308,7 +311,7 @@ ALU ALU0 (
 	.ALU_Op(ALU_Op)
 );
 
-StackFile StackFile0 (
+StackFile StackFile_0 (
 	.Reset(Reset),
 	.Slow_Clock(Slow_Clock),
 	.Stack_Write(Stack_Write),
@@ -318,7 +321,7 @@ StackFile StackFile0 (
 	.Err_Out(Err_Out)
 );
 
-RAM RAM0 (
+RAM RAM_0 (
 	.Write_Data(Data_1),
 	.Address(ALU_Result[15:0]),
 	.Mem_Write(Mem_Write),
@@ -327,14 +330,15 @@ RAM RAM0 (
 	.Read_Data(Mem_Out)
 );
 
-PS2 PS20 (
+PS2 PS2_0 (
 	.KB_Clk(PS2_KB_Clk),
 	.KB_Data(PS2_KB_Data),
-	.KB_Char(KB_Byte)
+	.Kb_Byte(Kb_Byte)
 );
 
-IO_Module IO_Module0 (
+IO_Module IO_Module_0 (
 	.Slow_Clock(Slow_Clock),
+	.Fast_Clock(Fast_Clock),
 	.Reset(Reset),
 	.Enable(IO_Enable),
 	.IO(IO_Selection),
@@ -351,7 +355,8 @@ IO_Module IO_Module0 (
 	.Display4(Display4),
 	.Display5(Display5),
 	.Display6(Display6),
-	.Display7(Display7)
+	.Display7(Display7),
+	.Kb_Byte(Kb_Byte)
 );
 
 Mux32 Mux_Mem (
@@ -368,7 +373,7 @@ Mux32 Mux_ALU (
 	.Data_Out(ALU_Data_3)
 );
 
-Mux32 Mux_IO (
+Mux32 Mux_IO_to_Mem (
 	.Switch(IO_Enable),
 	.Data_0(Data_From_Mem),
 	.Data_1(Data_In),

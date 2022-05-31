@@ -3,7 +3,7 @@ module PS2
 (
 	input KB_Clk,
 	input KB_Data,
-	output reg [7:0] KB_Char
+	output reg [7:0] Kb_Byte
 );
 
 reg [7:0] Recv_Buffer;
@@ -19,13 +19,13 @@ begin
 	Flag_Done <= 1'b0;
 	Recv_Buffer <= RELEASE_BIT;
 	Data_Recv <= RELEASE_BIT;
-	KB_Char <= RELEASE_BIT;
+	Kb_Byte <= RELEASE_BIT;
 end
 
 always @ (negedge KB_Clk)
 begin
 	case(Bit_Counter)
-		0: ; //first bit
+		0: ; //Start bit
 		1: Recv_Buffer[0] <= KB_Data;
 		2: Recv_Buffer[1] <= KB_Data;
 		3: Recv_Buffer[2] <= KB_Data;
@@ -39,7 +39,7 @@ begin
 	endcase
 
 	if(Bit_Counter <= 9)
-		Bit_Counter <= Bit_Counter + 1;
+		Bit_Counter <= Bit_Counter + 4'b1;
 	else if(Bit_Counter == 10)
 		Bit_Counter <= 0;
 end
@@ -47,7 +47,7 @@ end
 always @ (posedge Flag_Done)
 begin
 	if(Recv_Buffer == RELEASE_BIT)
-		KB_Char <= Data_Recv;
+		Kb_Byte <= Data_Recv;
 	else
  		Data_Recv <= Recv_Buffer;
 end

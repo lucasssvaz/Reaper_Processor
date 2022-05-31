@@ -1,35 +1,39 @@
 module IO_Module (
 	input Slow_Clock,
-	input Reset, 
-	input Enable, 
-	input IO, 
-	input Confirm, 
-	output reg signed [31:0] Data_In, 
-	input signed [31:0] Data_Out, 
-	output reg signed [31:0] Data_Debug, 
-	input signed [17:0] Raw_Input, 
-	output reg Interrupt, 
-	output reg [6:0] Display0, 
-	output reg [6:0] Display1, 
-	output reg [6:0] Display2, 
-	output reg [6:0] Display3, 
-	output reg [6:0] Display4, 
-	output reg [6:0] Display5, 
-	output reg [6:0] Display6, 
-	output reg [6:0] Display7
+	input Fast_Clock,
+	input Reset,
+	input Enable,
+	input [1:0] IO,
+	input Confirm,
+	output reg signed [31:0] Data_In,
+	input signed [31:0] Data_Out,
+	output reg signed [31:0] Data_Debug,
+	input signed [17:0] Raw_Input,
+	output reg Interrupt,
+	output reg [6:0] Display0,
+	output reg [6:0] Display1,
+	output reg [6:0] Display2,
+	output reg [6:0] Display3,
+	output reg [6:0] Display4,
+	output reg [6:0] Display5,
+	output reg [6:0] Display6,
+	output reg [6:0] Display7,
+	input [7:0] Kb_Byte
 );
 
+// IO = 0 -> OUTPUT 7 SEG. DISPLAY
+// IO = 1 -> INPUT SWITCHES
+// IO = 2 -> INPUT PS2 KEYBOARD
+
 reg State = 0;
-wire In_Op;
 wire Out_Op;
+wire In_Sw_Op;
+wire In_Kb_Op;
 
-assign Out_Op = (Enable & IO);
-assign In_Op = (Enable & (~IO));
-
-always @ (Data_Out)
-begin
-	Data_Debug <= Data_Out;
-end
+assign Out_Op = (Enable & (IO == 0));
+assign In_Sw_Op = (Enable & (IO == 1));
+assign In_Kb_Op = (Enable & (IO == 2));
+assign Data_Debug = Data_Out;
 
 task To_Display;
 
@@ -59,11 +63,19 @@ task To_Display;
 
 endtask
 
-always @ (negedge Confirm)
+always @ (negedge Fast_Clock)
 begin
-	if (Enable && (!IO))
+	if (In_Sw_Op && !Confirm)
 	begin
-		Data_In = {{14{Raw_Input[17]}},Raw_Input};
+		Data_In = {{14{Raw_Input[17]}}, Raw_Input};
+	end
+	else if (In_Kb_Op)
+	begin
+		Data_In = {{24{1'b0}}, Kb_Byte};
+	end
+	else
+	begin
+		Data_In = Data_In;
 	end
 end
 
@@ -74,7 +86,7 @@ begin
 		Interrupt = 0;
 		State = 0;
 	end
-	else if (In_Op)
+	else if (In_Sw_Op)
 	begin
 		if (!State && !Confirm)
 		begin

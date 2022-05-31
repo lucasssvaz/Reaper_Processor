@@ -74,25 +74,25 @@ set_global_assignment -name ALM_REGISTER_PACKING_EFFORT LOW
 set_global_assignment -name FINAL_PLACEMENT_OPTIMIZATION NEVER
 set_global_assignment -name FITTER_AGGRESSIVE_ROUTABILITY_OPTIMIZATION NEVER
 set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC_FOR_AREA OFF
-set_location_assignment PIN_Y16 -to Raw_Input[0]
-set_location_assignment PIN_AD21 -to Raw_Input[1]
-set_location_assignment PIN_AE16 -to Raw_Input[2]
-set_location_assignment PIN_AD15 -to Raw_Input[3]
-set_location_assignment PIN_AE15 -to Raw_Input[4]
-set_location_assignment PIN_AC19 -to Raw_Input[5]
-set_location_assignment PIN_AF16 -to Raw_Input[6]
-set_location_assignment PIN_AD19 -to Raw_Input[7]
-set_location_assignment PIN_AF15 -to Raw_Input[8]
-set_location_assignment PIN_AF24 -to Raw_Input[9]
-set_location_assignment PIN_AE21 -to Raw_Input[10]
-set_location_assignment PIN_AF25 -to Raw_Input[11]
-set_location_assignment PIN_AC22 -to Raw_Input[12]
-set_location_assignment PIN_AE22 -to Raw_Input[13]
-set_location_assignment PIN_AF21 -to Raw_Input[14]
-set_location_assignment PIN_AF22 -to Raw_Input[15]
-set_location_assignment PIN_AD22 -to Raw_Input[16]
-set_location_assignment PIN_AG25 -to Raw_Input[17]
-set_location_assignment PIN_AB22 -to Raw_Reset_I
+set_location_assignment PIN_AB28 -to Raw_Input[0]
+set_location_assignment PIN_AC28 -to Raw_Input[1]
+set_location_assignment PIN_AC27 -to Raw_Input[2]
+set_location_assignment PIN_AD27 -to Raw_Input[3]
+set_location_assignment PIN_AB27 -to Raw_Input[4]
+set_location_assignment PIN_AC26 -to Raw_Input[5]
+set_location_assignment PIN_AD26 -to Raw_Input[6]
+set_location_assignment PIN_AB26 -to Raw_Input[7]
+set_location_assignment PIN_AC25 -to Raw_Input[8]
+set_location_assignment PIN_AB25 -to Raw_Input[9]
+set_location_assignment PIN_AC24 -to Raw_Input[10]
+set_location_assignment PIN_AB24 -to Raw_Input[11]
+set_location_assignment PIN_AB23 -to Raw_Input[12]
+set_location_assignment PIN_AA24 -to Raw_Input[13]
+set_location_assignment PIN_AA23 -to Raw_Input[14]
+set_location_assignment PIN_AA22 -to Raw_Input[15]
+set_location_assignment PIN_Y24 -to Raw_Input[16]
+set_location_assignment PIN_Y23 -to Raw_Input[17]
+set_location_assignment PIN_R24 -to Raw_Reset_I
 set_location_assignment PIN_G18 -to Display0[0]
 set_location_assignment PIN_F22 -to Display0[1]
 set_location_assignment PIN_E17 -to Display0[2]
@@ -149,7 +149,7 @@ set_location_assignment PIN_AH17 -to Display7[3]
 set_location_assignment PIN_AF17 -to Display7[4]
 set_location_assignment PIN_AG18 -to Display7[5]
 set_location_assignment PIN_AA14 -to Display7[6]
-set_location_assignment PIN_Y17 -to Raw_Button_I
+set_location_assignment PIN_M23 -to Raw_Button_I
 set_global_assignment -name VERILOG_INPUT_VERSION SYSTEMVERILOG_2005
 set_global_assignment -name VERILOG_SHOW_LMF_MAPPING_MESSAGES OFF
 set_global_assignment -name ENABLE_OCT_DONE OFF
@@ -235,6 +235,16 @@ set_instance_assignment -name VIRTUAL_PIN ON -to DebugT38
 set_instance_assignment -name VIRTUAL_PIN ON -to DebugT39
 set_instance_assignment -name VIRTUAL_PIN ON -to DebugZERO
 set_location_assignment PIN_H19 -to Halt
+set_location_assignment PIN_G6 -to PS2_KB_Clk
+set_location_assignment PIN_H5 -to PS2_KB_Data
+set_instance_assignment -name VIRTUAL_PIN ON -to Debug_Kb_Byte
+set_instance_assignment -name VIRTUAL_PIN ON -to Slow_Clock
+set_instance_assignment -name VIRTUAL_PIN ON -to Change_Context
+set_global_assignment -name ENABLE_SIGNALTAP ON
+set_global_assignment -name USE_SIGNALTAP_FILE output_files/stp1.stp
+set_global_assignment -name SLD_FILE db/stp1_auto_stripped.stp
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name VERILOG_FILE VGA.v
 set_global_assignment -name VERILOG_FILE PS2.v
 set_global_assignment -name VERILOG_FILE Mux13.v
 set_global_assignment -name VERILOG_FILE StackFile.v
@@ -251,14 +261,3 @@ set_global_assignment -name VERILOG_FILE Ctrl_Module.v
 set_global_assignment -name VERILOG_FILE ClockManager.v
 set_global_assignment -name VERILOG_FILE ALU.v
 set_global_assignment -name VECTOR_WAVEFORM_FILE Waveform.vwf
-set_location_assignment PIN_E21 -to KB_Byte[0]
-set_location_assignment PIN_E22 -to KB_Byte[1]
-set_location_assignment PIN_E25 -to KB_Byte[2]
-set_location_assignment PIN_E24 -to KB_Byte[3]
-set_location_assignment PIN_H21 -to KB_Byte[4]
-set_location_assignment PIN_G20 -to KB_Byte[5]
-set_location_assignment PIN_G22 -to KB_Byte[6]
-set_location_assignment PIN_G21 -to KB_Byte[7]
-set_location_assignment PIN_G6 -to PS2_KB_Clk
-set_location_assignment PIN_H5 -to PS2_KB_Data
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

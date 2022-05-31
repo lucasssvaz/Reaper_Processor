@@ -20,7 +20,7 @@ begin
 		Slow_Clock <= 1;
 	end
 	else
-	begin		
+	begin
 		if (count<N_COUNT)
 		begin
 			count <= count + 1;
