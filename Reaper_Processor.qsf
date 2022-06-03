@@ -242,8 +242,6 @@ set_instance_assignment -name VIRTUAL_PIN ON -to Slow_Clock
 set_instance_assignment -name VIRTUAL_PIN ON -to Change_Context
 set_global_assignment -name ENABLE_SIGNALTAP ON
 set_global_assignment -name USE_SIGNALTAP_FILE output_files/stp1.stp
-set_global_assignment -name SLD_FILE db/stp1_auto_stripped.stp
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_global_assignment -name VERILOG_FILE VGA.v
 set_global_assignment -name VERILOG_FILE PS2.v
 set_global_assignment -name VERILOG_FILE Mux13.v
@@ -261,3 +259,34 @@ set_global_assignment -name VERILOG_FILE Ctrl_Module.v
 set_global_assignment -name VERILOG_FILE ClockManager.v
 set_global_assignment -name VERILOG_FILE ALU.v
 set_global_assignment -name VECTOR_WAVEFORM_FILE Waveform.vwf
+set_location_assignment PIN_C13 -to VGA_VS
+set_location_assignment PIN_G13 -to VGA_HS
+set_location_assignment PIN_E12 -to VGA_Red[0]
+set_location_assignment PIN_E11 -to VGA_Red[1]
+set_location_assignment PIN_D10 -to VGA_Red[2]
+set_location_assignment PIN_F12 -to VGA_Red[3]
+set_location_assignment PIN_G10 -to VGA_Red[4]
+set_location_assignment PIN_J12 -to VGA_Red[5]
+set_location_assignment PIN_H8 -to VGA_Red[6]
+set_location_assignment PIN_H10 -to VGA_Red[7]
+set_location_assignment PIN_G8 -to VGA_Green[0]
+set_location_assignment PIN_G11 -to VGA_Green[1]
+set_location_assignment PIN_F8 -to VGA_Green[2]
+set_location_assignment PIN_H12 -to VGA_Green[3]
+set_location_assignment PIN_C8 -to VGA_Green[4]
+set_location_assignment PIN_B8 -to VGA_Green[5]
+set_location_assignment PIN_F10 -to VGA_Green[6]
+set_location_assignment PIN_C9 -to VGA_Green[7]
+set_location_assignment PIN_B10 -to VGA_Blue[0]
+set_location_assignment PIN_A10 -to VGA_Blue[1]
+set_location_assignment PIN_C11 -to VGA_Blue[2]
+set_location_assignment PIN_B11 -to VGA_Blue[3]
+set_location_assignment PIN_A11 -to VGA_Blue[4]
+set_location_assignment PIN_C12 -to VGA_Blue[5]
+set_location_assignment PIN_D11 -to VGA_Blue[6]
+set_location_assignment PIN_D12 -to VGA_Blue[7]
+set_location_assignment PIN_A12 -to VGA_Clk
+set_location_assignment PIN_C10 -to VGA_Sync_N
+set_location_assignment PIN_F11 -to VGA_Blank_N
+set_global_assignment -name SLD_FILE db/stp1_auto_stripped.stp
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

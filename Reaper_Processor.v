@@ -88,58 +88,66 @@ module Reaper_Processor
 	output [12:0] Mux_Stack_Out,
 	output Halt,
 	input PS2_KB_Clk,
-	input PS2_KB_Data
+	input PS2_KB_Data,
+	output VGA_HS,
+	output VGA_VS,
+	output [7:0] VGA_Red,
+	output [7:0] VGA_Green,
+	output [7:0] VGA_Blue,
+	output VGA_Blank_N,
+	output VGA_Clk,
+	output VGA_Sync_N
 );
 
 
 //==============================================================
 
-wire Raw_Button;
-assign Button = ~Raw_Button_I;
-wire Raw_Reset;
-assign Reset = ~Raw_Reset_I;
 reg [12:0] NPPC;
-wire [12:0] NextPC;
-wire Interrupt;
-wire IO_Enable;
+reg [12:0] Proc_PC[3:0];
+reg [7:0] Kb_Byte;
+reg OR_Branch;
+reg Stack_Mux_Control;
 wire [1:0] IO_Selection;
-wire Reg_Write;
-wire Jump_R;
-wire Jump_I;
-wire Stack_Enable;
-wire Stack_Write;
-wire Branch;
-wire Mem_Write;
-wire Mem_To_Reg;
+wire [12:0] Branch_Out;
+wire [12:0] Jump_Out;
+wire [12:0] NextPC;
+wire [12:0] Ret_Add;
 wire [4:0] ALU_Op;
 wire ALU_Src;
+wire ALU_True;
+wire Branch;
+wire Button;
+wire Interrupt;
+wire IO_Enable;
+wire Jump_I;
+wire Jump_R;
 wire Long_Imm;
-wire signed [31:0] Reg_Write_Data;
+wire Mem_To_Reg;
+wire Mem_Write;
+wire Raw_Button;
+wire Raw_Reset;
+wire Reg_Write;
+wire Reset;
+wire signed [31:0] ALU_Data_3;
+wire signed [31:0] ALU_Result;
 wire signed [31:0] Data_1;
 wire signed [31:0] Data_2;
 wire signed [31:0] Data_3;
-wire signed [31:0] Out_Imm;
-wire signed [31:0] Data_To_Reg;
-wire signed [31:0] Data_In;
 wire signed [31:0] Data_From_Mem;
-wire [12:0] Ret_Add;
-wire ALU_True;
-wire signed [31:0] ALU_Result;
-wire signed [31:0] ALU_Data_3;
-wire Button;
-reg OR_Branch;
-wire [12:0] Branch_Out;
-wire [12:0] Jump_Out;
-reg Stack_Mux_Control;
+wire signed [31:0] Data_In;
+wire signed [31:0] Data_To_Reg;
 wire signed [31:0] Mem_Out;
-wire Reset;
-reg [12:0] Proc_PC[3:0];
-reg [7:0] Kb_Byte;
+wire signed [31:0] Out_Imm;
+wire signed [31:0] Reg_Write_Data;
+wire Stack_Enable;
+wire Stack_Write;
 
 
 //======================================================================================
 
 assign Debug_Kb_Byte = Kb_Byte;
+assign Reset = ~Raw_Reset_I;
+assign Button = ~Raw_Button_I;
 
 initial
 begin
@@ -178,7 +186,8 @@ end
 
 //======================================================================================
 
-Program_Counter Program_Counter_0 (
+Program_Counter Program_Counter_0
+(
 	.Interrupt(Interrupt),
 	.Reset(Reset),
 	.Slow_Clock(Slow_Clock),
@@ -187,19 +196,22 @@ Program_Counter Program_Counter_0 (
 	.PC(PC)
 );
 
-ROM ROM_0 (
+ROM ROM_0
+(
 	.PC(PC),
 	.Fast_Clock(Fast_Clock),
 	.Instruction(Instruction)
 );
 
-ClockManager ClockManager_0 (
+ClockManager ClockManager_0
+(
 	.Reset(Reset),
 	.Fast_Clock(Fast_Clock),
 	.Slow_Clock(Slow_Clock)
 );
 
-Ctrl_Module Ctrl_Module_0 (
+Ctrl_Module Ctrl_Module_0
+(
 	.Instruction(Instruction[31:26]),
 	.IO_Enable(IO_Enable),
 	.IO_Selection(IO_Selection),
@@ -218,7 +230,8 @@ Ctrl_Module Ctrl_Module_0 (
 	.Change_Context(Change_Context)
 );
 
-RegFile RegFile_0 (
+RegFile RegFile_0
+(
 	.DebugZERO(DebugZERO),
 	.DebugT0(DebugT0),
 	.DebugT1(DebugT1),
@@ -296,13 +309,15 @@ RegFile RegFile_0 (
 	.Data_3(Data_3)
 );
 
-Extend_Imm Extend_Imm_0 (
+Extend_Imm Extend_Imm_0
+(
 	.In_Imm(Instruction[19:0]),
 	.Long_Imm(Long_Imm),
 	.Out_Imm(Out_Imm)
 );
 
-ALU ALU_0 (
+ALU ALU_0
+(
 	.True(ALU_True),
 	.Result(ALU_Result),
 	.Fast_Clock(Fast_Clock),
@@ -311,7 +326,8 @@ ALU ALU_0 (
 	.ALU_Op(ALU_Op)
 );
 
-StackFile StackFile_0 (
+StackFile StackFile_0
+(
 	.Reset(Reset),
 	.Slow_Clock(Slow_Clock),
 	.Stack_Write(Stack_Write),
@@ -321,7 +337,8 @@ StackFile StackFile_0 (
 	.Err_Out(Err_Out)
 );
 
-RAM RAM_0 (
+RAM RAM_0
+(
 	.Write_Data(Data_1),
 	.Address(ALU_Result[15:0]),
 	.Mem_Write(Mem_Write),
@@ -330,13 +347,15 @@ RAM RAM_0 (
 	.Read_Data(Mem_Out)
 );
 
-PS2 PS2_0 (
+PS2 PS2_0
+(
 	.KB_Clk(PS2_KB_Clk),
 	.KB_Data(PS2_KB_Data),
 	.Kb_Byte(Kb_Byte)
 );
 
-IO_Module IO_Module_0 (
+IO_Module IO_Module_0
+(
 	.Slow_Clock(Slow_Clock),
 	.Fast_Clock(Fast_Clock),
 	.Reset(Reset),
@@ -359,49 +378,70 @@ IO_Module IO_Module_0 (
 	.Kb_Byte(Kb_Byte)
 );
 
-Mux32 Mux_Mem (
+VGA_Out VGA_Out_0
+(
+	.Fast_Clock(Fast_Clock),
+	.Reset(Reset),
+	.VGA_HS(VGA_HS),
+	.VGA_VS(VGA_VS),
+	.VGA_Clk(VGA_Clk),
+	.VGA_Red(VGA_Red),
+	.VGA_Green(VGA_Green),
+	.VGA_Blue(VGA_Blue),
+	.VGA_Blank_N(VGA_Blank_N),
+	.VGA_Sync_N(VGA_Sync_N)
+);
+
+Mux32 Mux_Mem
+(
 	.Switch(Mem_To_Reg),
 	.Data_0(ALU_Result),
 	.Data_1(Mem_Out),
 	.Data_Out(Data_From_Mem)
 );
 
-Mux32 Mux_ALU (
+Mux32 Mux_ALU
+(
 	.Switch(ALU_Src),
 	.Data_0(Data_3),
 	.Data_1(Out_Imm),
 	.Data_Out(ALU_Data_3)
 );
 
-Mux32 Mux_IO_to_Mem (
+Mux32 Mux_IO_to_Mem
+(
 	.Switch(IO_Enable),
 	.Data_0(Data_From_Mem),
 	.Data_1(Data_In),
 	.Data_Out(Reg_Write_Data)
 );
 
-Mux13 Mux_Branch (
+Mux13 Mux_Branch
+(
 	.Switch(OR_Branch),
 	.Data_0(NPPC),
 	.Data_1(Data_1[12:0]),
 	.Data_Out(Branch_Out)
 );
 
-Mux13 Mux_Jump (
+Mux13 Mux_Jump
+(
 	.Switch(Jump_I),
 	.Data_0(Branch_Out),
 	.Data_1(Out_Imm[12:0]),
 	.Data_Out(Jump_Out)
 );
 
-Mux13 Mux_Stack (
+Mux13 Mux_Stack
+(
 	.Switch(Stack_Mux_Control),
 	.Data_0(Jump_Out),
 	.Data_1(Ret_Add),
 	.Data_Out(Mux_Stack_Out)
 );
 
-Mux13 Mux_Context (
+Mux13 Mux_Context
+(
 	.Switch(Change_Context),
 	.Data_0(Mux_Stack_Out),
 	.Data_1(Context_PC),
