@@ -210,6 +210,33 @@ begin
 					ALU_Op <= 15;
 				end
 
+				4'b0110: //DWPX
+				begin
+					IO_Enable <= 1;
+					IO_Selection <= 3;
+					Reg_Write <= 0;
+					Branch <= 0;
+					ALU_Op <= 16;
+				end
+
+				4'b0111: //DWCH
+				begin
+					IO_Enable <= 1;
+					IO_Selection <= 3;
+					Reg_Write <= 0;
+					Branch <= 0;
+					ALU_Op <= 16;
+				end
+
+				4'b1000: //DWCN
+				begin
+					IO_Enable <= 1;
+					IO_Selection <= 3;
+					Reg_Write <= 0;
+					Branch <= 0;
+					ALU_Op <= 16;
+				end
+
 				default:
 				begin
 					Branch <= 0;
@@ -335,6 +362,17 @@ begin
 					IO_Enable <= 1;
 					IO_Selection <= 2;
 					Reg_Write <= 1;
+					Jump_R <= 0;
+					Jump_I <= 0;
+					Stack_Enable <= 0;
+					Stack_Write <= 0;
+				end
+
+				4'b1001: //DWCL
+				begin
+					IO_Enable <= 1;
+					IO_Selection <= 3;
+					Reg_Write <= 0;
 					Jump_R <= 0;
 					Jump_I <= 0;
 					Stack_Enable <= 0;

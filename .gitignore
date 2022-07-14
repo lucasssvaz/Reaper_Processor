@@ -12,3 +12,5 @@ output_files/
 simulation/
 *.mp4
 Reaper_Processor.code-workspace
+.qsys_edit
+greybox_tmp

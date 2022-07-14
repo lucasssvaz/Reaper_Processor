@@ -1,3 +1,19 @@
+{ "" "" "" "Entity \"Mux\" obtained from \"Mux.v\" instead of from Quartus Prime megafunction library" {  } {  } 0 12090 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Pin \"VGA_Sync_N\" is stuck at GND" {  } {  } 0 13410 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Verilog HDL assignment warning at VGA.v(143): truncated value with size 32 to match size of target (15)" {  } {  } 0 10230 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Verilog HDL assignment warning at VGA.v(144): truncated value with size 32 to match size of target (15)" {  } {  } 0 10230 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Verilog HDL assignment warning at VGA.v(176): truncated value with size 32 to match size of target (8)" {  } {  } 0 10230 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Verilog HDL assignment warning at VGA.v(177): truncated value with size 32 to match size of target (8)" {  } {  } 0 10230 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Verilog HDL assignment warning at VGA.v(178): truncated value with size 32 to match size of target (8)" {  } {  } 0 10230 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Pin \"VGA_Red\[0\]\" is stuck at GND" {  } {  } 0 13410 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Pin \"VGA_Red\[1\]\" is stuck at GND" {  } {  } 0 13410 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Pin \"VGA_Green\[0\]\" is stuck at GND" {  } {  } 0 13410 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Pin \"VGA_Green\[1\]\" is stuck at GND" {  } {  } 0 13410 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Pin \"VGA_Blue\[0\]\" is stuck at GND" {  } {  } 0 13410 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Pin \"VGA_Blue\[1\]\" is stuck at GND" {  } {  } 0 13410 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Verilog HDL assignment warning at VGA_Image_Processor.v(99): truncated value with size 9 to match size of target (8)" {  } {  } 0 10230 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Verilog HDL assignment warning at VGA_Image_Processor.v(100): truncated value with size 9 to match size of target (8)" {  } {  } 0 10230 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Verilog HDL assignment warning at VGA_Image_Processor.v(101): truncated value with size 9 to match size of target (8)" {  } {  } 0 10230 "" 0 0 "Design Software" 0 -1 0 ""}
 { "" "" "" "*" {  } {  } 0 10850 "" 0 0 "Design Software" 0 -1 0 ""}
 { "" "" "" "*" {  } {  } 0 10030 "" 0 0 "Design Software" 0 -1 0 ""}
 { "" "" "" "*" {  } {  } 0 18236 "" 0 0 "Design Software" 0 -1 0 ""}

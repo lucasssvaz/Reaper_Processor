@@ -72,7 +72,7 @@ set_global_assignment -name PHYSICAL_SYNTHESIS_EFFORT FAST
 set_global_assignment -name OPTIMIZE_FOR_METASTABILITY OFF
 set_global_assignment -name ALM_REGISTER_PACKING_EFFORT LOW
 set_global_assignment -name FINAL_PLACEMENT_OPTIMIZATION NEVER
-set_global_assignment -name FITTER_AGGRESSIVE_ROUTABILITY_OPTIMIZATION NEVER
+set_global_assignment -name FITTER_AGGRESSIVE_ROUTABILITY_OPTIMIZATION AUTOMATICALLY
 set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC_FOR_AREA OFF
 set_location_assignment PIN_AB28 -to Raw_Input[0]
 set_location_assignment PIN_AC28 -to Raw_Input[1]
@@ -176,7 +176,7 @@ set_instance_assignment -name VIRTUAL_PIN ON -to DebugRET
 set_instance_assignment -name VIRTUAL_PIN ON -to DebugSP
 set_instance_assignment -name VIRTUAL_PIN ON -to Instruction
 set_instance_assignment -name VIRTUAL_PIN ON -to Mux_Stack_Out
-set_instance_assignment -name VIRTUAL_PIN ON -to Out_Int
+set_instance_assignment -name VIRTUAL_PIN ON -to Debug_7Seg
 set_instance_assignment -name VIRTUAL_PIN ON -to PC
 set_instance_assignment -name VIRTUAL_PIN ON -to Proc_ID
 set_instance_assignment -name VIRTUAL_PIN ON -to Context_PC
@@ -242,23 +242,6 @@ set_instance_assignment -name VIRTUAL_PIN ON -to Slow_Clock
 set_instance_assignment -name VIRTUAL_PIN ON -to Change_Context
 set_global_assignment -name ENABLE_SIGNALTAP ON
 set_global_assignment -name USE_SIGNALTAP_FILE output_files/stp1.stp
-set_global_assignment -name VERILOG_FILE VGA.v
-set_global_assignment -name VERILOG_FILE PS2.v
-set_global_assignment -name VERILOG_FILE Mux13.v
-set_global_assignment -name VERILOG_FILE StackFile.v
-set_global_assignment -name VERILOG_FILE ROM.v
-set_global_assignment -name VERILOG_FILE RegFile.v
-set_global_assignment -name VERILOG_FILE Reaper_Processor.v
-set_global_assignment -name VERILOG_FILE RAM.v
-set_global_assignment -name VERILOG_FILE Program_Counter.v
-set_global_assignment -name VERILOG_FILE Mux32.v
-set_global_assignment -name VERILOG_FILE IO_Module.v
-set_global_assignment -name VERILOG_FILE Extend_Imm.v
-set_global_assignment -name VERILOG_FILE Debounce.v
-set_global_assignment -name VERILOG_FILE Ctrl_Module.v
-set_global_assignment -name VERILOG_FILE ClockManager.v
-set_global_assignment -name VERILOG_FILE ALU.v
-set_global_assignment -name VECTOR_WAVEFORM_FILE Waveform.vwf
 set_location_assignment PIN_C13 -to VGA_VS
 set_location_assignment PIN_G13 -to VGA_HS
 set_location_assignment PIN_E12 -to VGA_Red[0]
@@ -288,5 +271,33 @@ set_location_assignment PIN_D12 -to VGA_Blue[7]
 set_location_assignment PIN_A12 -to VGA_Clk
 set_location_assignment PIN_C10 -to VGA_Sync_N
 set_location_assignment PIN_F11 -to VGA_Blank_N
-set_global_assignment -name SLD_FILE db/stp1_auto_stripped.stp
+set_global_assignment -name VERILOG_CONSTANT_LOOP_LIMIT 20000
+set_global_assignment -name VERILOG_NON_CONSTANT_LOOP_LIMIT 20000
+set_global_assignment -name SYNTHESIS_EFFORT FAST
+set_global_assignment -name NUMBER_OF_REMOVED_REGISTERS_REPORTED 20000
+set_global_assignment -name NUMBER_OF_SWEPT_NODES_REPORTED 20000
+set_global_assignment -name ALLOW_REGISTER_MERGING ON
+set_global_assignment -name ALLOW_REGISTER_DUPLICATION ON
+set_global_assignment -name MUX_RESTRUCTURE ON
+set_global_assignment -name REMOVE_DUPLICATE_REGISTERS ON
+set_global_assignment -name ALLOW_REGISTER_RETIMING ON
+set_global_assignment -name VERILOG_FILE VGA_Image_Processor.v
+set_global_assignment -name VERILOG_FILE VGA_Signal_Generator.v
+set_global_assignment -name VERILOG_FILE Mux.v
+set_global_assignment -name VERILOG_FILE PS2.v
+set_global_assignment -name VERILOG_FILE Stack_Reg.v
+set_global_assignment -name VERILOG_FILE ROM.v
+set_global_assignment -name VERILOG_FILE Reg_Bank.v
+set_global_assignment -name VERILOG_FILE Reaper_Processor.v
+set_global_assignment -name VERILOG_FILE RAM.v
+set_global_assignment -name VERILOG_FILE Program_Counter.v
+set_global_assignment -name VERILOG_FILE IO_Module.v
+set_global_assignment -name VERILOG_FILE Extend_Imm.v
+set_global_assignment -name VERILOG_FILE Debounce.v
+set_global_assignment -name VERILOG_FILE Ctrl_Module.v
+set_global_assignment -name VERILOG_FILE Clock_Manager.v
+set_global_assignment -name VERILOG_FILE ALU.v
+set_global_assignment -name VECTOR_WAVEFORM_FILE Waveform.vwf
+set_global_assignment -name QIP_FILE VGA_PLL.qip
+set_global_assignment -name QIP_FILE VGA_Frame_Buffer.qip
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

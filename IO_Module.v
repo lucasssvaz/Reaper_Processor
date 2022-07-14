@@ -1,4 +1,5 @@
-module IO_Module (
+module IO_Module
+(
 	input Slow_Clock,
 	input Fast_Clock,
 	input Reset,
@@ -6,8 +7,10 @@ module IO_Module (
 	input [1:0] IO,
 	input Confirm,
 	output reg signed [31:0] Data_In,
-	input signed [31:0] Data_Out,
-	output reg signed [31:0] Data_Debug,
+	input signed [31:0] Data_1,
+	input signed [31:0] Data_2,
+	input signed [31:0] Data_3,
+	output reg signed [31:0] Debug_7Seg,
 	input signed [17:0] Raw_Input,
 	output reg Interrupt,
 	output reg [6:0] Display0,
@@ -18,25 +21,56 @@ module IO_Module (
 	output reg [6:0] Display5,
 	output reg [6:0] Display6,
 	output reg [6:0] Display7,
-	input [7:0] Kb_Byte
+	input [7:0] Kb_Byte,
+	output VGA_HS,
+	output VGA_VS,
+	output [7:0] VGA_Red,
+	output [7:0] VGA_Green,
+	output [7:0] VGA_Blue,
+	output VGA_Blank_N,
+	output VGA_Clk,
+	output VGA_Sync_N
 );
 
 // IO = 0 -> OUTPUT 7 SEG. DISPLAY
 // IO = 1 -> INPUT SWITCHES
 // IO = 2 -> INPUT PS2 KEYBOARD
+// IO = 3 -> OUTPUT VGA
 
 reg State = 0;
-wire Out_Op;
+wire Out_7Seg;
 wire In_Sw_Op;
 wire In_Kb_Op;
+wire Out_VGA;
 
-assign Out_Op = (Enable & (IO == 0));
+assign Out_7Seg = (Enable & (IO == 0));
 assign In_Sw_Op = (Enable & (IO == 1));
 assign In_Kb_Op = (Enable & (IO == 2));
-assign Data_Debug = Data_Out;
+assign Out_VGA = (Enable & (IO == 3));
+assign Debug_7Seg = Data_1;
+
+VGA_Image_Processor VGA_Image_Processor_0
+(
+	.Fast_Clock(Fast_Clock),
+	.Slow_Clock(Slow_Clock),
+	.Reset(Reset),
+	.VGA_HS(VGA_HS),
+	.VGA_VS(VGA_VS),
+	.VGA_Clk(VGA_Clk),
+	.VGA_Red(VGA_Red),
+	.VGA_Green(VGA_Green),
+	.VGA_Blue(VGA_Blue),
+	.VGA_Blank_N(VGA_Blank_N),
+	.VGA_Sync_N(VGA_Sync_N),
+	.Enable_Draw(Out_VGA),
+	.Draw_X(Data_1),
+	.Draw_Y(Data_2),
+	.Draw_Color(Data_3)
+);
+
+//----------------------------------------------
 
 task To_Display;
-
 	input [3:0] Bin;
 	output [6:0] Disp_Hex;
 
@@ -58,10 +92,10 @@ task To_Display;
 		14: Disp_Hex <= 7'b000_0110;
 		15: Disp_Hex <= 7'b000_1110;
 		default: Disp_Hex <= 7'b111_1111;
-
 	endcase
-
 endtask
+
+//----------------------------------------------
 
 always @ (negedge Fast_Clock)
 begin
@@ -125,16 +159,16 @@ begin
 		Display6 <= 7'b100_0000;
 		Display7 <= 7'b100_0000;
 	end
-	else if (Out_Op)	//WRITE OUTPUT
+	else if (Out_7Seg)	//WRITE OUTPUT
 	begin
-		To_Display(Data_Out[31:28], Display7);
-		To_Display(Data_Out[27:24], Display6);
-		To_Display(Data_Out[23:20], Display5);
-		To_Display(Data_Out[19:16], Display4);
-		To_Display(Data_Out[15:12], Display3);
-		To_Display(Data_Out[11:8], Display2);
-		To_Display(Data_Out[7:4], Display1);
-		To_Display(Data_Out[3:0], Display0);
+		To_Display(Data_1[31:28], Display7);
+		To_Display(Data_1[27:24], Display6);
+		To_Display(Data_1[23:20], Display5);
+		To_Display(Data_1[19:16], Display4);
+		To_Display(Data_1[15:12], Display3);
+		To_Display(Data_1[11:8], Display2);
+		To_Display(Data_1[7:4], Display1);
+		To_Display(Data_1[3:0], Display0);
 	end
 end
 

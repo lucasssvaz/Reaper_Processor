@@ -78,8 +78,8 @@ module Reaper_Processor
     output signed [31:0] DebugAX1,
     output signed [31:0] DebugAX2,
     output signed [31:0] DebugCRT,
+	output signed [31:0] Debug_7Seg,
 	output [7:0] Debug_Kb_Byte,
-	output signed [31:0] Out_Int,
 	output [12:0] PC,
 	output [31:0] Instruction,
 	output Change_Context,
@@ -152,9 +152,9 @@ assign Button = ~Raw_Button_I;
 initial
 begin
 	Proc_PC[0] <= 13'd0;
-	Proc_PC[1] <= 13'd512;
-	Proc_PC[2] <= 13'd1024;
-	Proc_PC[3] <= 13'd1536;
+	Proc_PC[1] <= 13'd1024;
+	Proc_PC[2] <= 13'd2048;
+	Proc_PC[3] <= 13'd3072;
 	Proc_ID <= 2'b0;
 end
 
@@ -203,7 +203,7 @@ ROM ROM_0
 	.Instruction(Instruction)
 );
 
-ClockManager ClockManager_0
+Clock_Manager Clock_Manager_0
 (
 	.Reset(Reset),
 	.Fast_Clock(Fast_Clock),
@@ -230,7 +230,7 @@ Ctrl_Module Ctrl_Module_0
 	.Change_Context(Change_Context)
 );
 
-RegFile RegFile_0
+Reg_Bank Reg_Bank_0
 (
 	.DebugZERO(DebugZERO),
 	.DebugT0(DebugT0),
@@ -326,7 +326,7 @@ ALU ALU_0
 	.ALU_Op(ALU_Op)
 );
 
-StackFile StackFile_0
+Stack_Reg Stack_Reg_0
 (
 	.Reset(Reset),
 	.Slow_Clock(Slow_Clock),
@@ -363,8 +363,10 @@ IO_Module IO_Module_0
 	.IO(IO_Selection),
 	.Confirm(Button),
 	.Data_In(Data_In),
-	.Data_Out(Data_1),
-	.Data_Debug(Out_Int),
+	.Data_1(Data_1),
+	.Data_2(Data_2),
+	.Data_3(Data_3),
+	.Debug_7Seg(Debug_7Seg),
 	.Raw_Input(Raw_Input),
 	.Interrupt(Interrupt),
 	.Display0(Display0),
@@ -375,13 +377,7 @@ IO_Module IO_Module_0
 	.Display5(Display5),
 	.Display6(Display6),
 	.Display7(Display7),
-	.Kb_Byte(Kb_Byte)
-);
-
-VGA_Out VGA_Out_0
-(
-	.Fast_Clock(Fast_Clock),
-	.Reset(Reset),
+	.Kb_Byte(Kb_Byte),
 	.VGA_HS(VGA_HS),
 	.VGA_VS(VGA_VS),
 	.VGA_Clk(VGA_Clk),
@@ -392,7 +388,7 @@ VGA_Out VGA_Out_0
 	.VGA_Sync_N(VGA_Sync_N)
 );
 
-Mux32 Mux_Mem
+Mux #(.BITS(32)) Mux_Mem
 (
 	.Switch(Mem_To_Reg),
 	.Data_0(ALU_Result),
@@ -400,7 +396,7 @@ Mux32 Mux_Mem
 	.Data_Out(Data_From_Mem)
 );
 
-Mux32 Mux_ALU
+Mux #(.BITS(32)) Mux_ALU
 (
 	.Switch(ALU_Src),
 	.Data_0(Data_3),
@@ -408,7 +404,7 @@ Mux32 Mux_ALU
 	.Data_Out(ALU_Data_3)
 );
 
-Mux32 Mux_IO_to_Mem
+Mux #(.BITS(32)) Mux_IO_to_Mem
 (
 	.Switch(IO_Enable),
 	.Data_0(Data_From_Mem),
@@ -416,7 +412,7 @@ Mux32 Mux_IO_to_Mem
 	.Data_Out(Reg_Write_Data)
 );
 
-Mux13 Mux_Branch
+Mux #(.BITS(13)) Mux_Branch
 (
 	.Switch(OR_Branch),
 	.Data_0(NPPC),
@@ -424,7 +420,7 @@ Mux13 Mux_Branch
 	.Data_Out(Branch_Out)
 );
 
-Mux13 Mux_Jump
+Mux #(.BITS(13)) Mux_Jump
 (
 	.Switch(Jump_I),
 	.Data_0(Branch_Out),
@@ -432,7 +428,7 @@ Mux13 Mux_Jump
 	.Data_Out(Jump_Out)
 );
 
-Mux13 Mux_Stack
+Mux #(.BITS(13)) Mux_Stack
 (
 	.Switch(Stack_Mux_Control),
 	.Data_0(Jump_Out),
@@ -440,7 +436,7 @@ Mux13 Mux_Stack
 	.Data_Out(Mux_Stack_Out)
 );
 
-Mux13 Mux_Context
+Mux #(.BITS(13)) Mux_Context
 (
 	.Switch(Change_Context),
 	.Data_0(Mux_Stack_Out),

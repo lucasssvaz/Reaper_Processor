@@ -6,20 +6,20 @@ module RAM
 	input Mem_Write, Fast_Clock, Slow_Clock,
 	output reg [(DATA_WIDTH-1):0] Read_Data
 );
-	
-	reg [DATA_WIDTH-1:0] ram[1023:0];
-	
+
+	reg [DATA_WIDTH-1:0] ram[2047:0]; //512 per process
+
 	always @ (negedge Slow_Clock)
 	begin
 		// Write
 		if (Mem_Write)
 			ram[Address] = Write_Data;
 	end
-	
+
 	always @ (negedge Fast_Clock)
 	begin
-		// Read 
+		// Read
 		Read_Data = ram[Address];
 	end
-	
+
 endmodule
