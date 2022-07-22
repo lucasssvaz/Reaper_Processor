@@ -182,7 +182,7 @@ set_instance_assignment -name VIRTUAL_PIN ON -to Proc_ID
 set_instance_assignment -name VIRTUAL_PIN ON -to Context_PC
 set_instance_assignment -name VIRTUAL_PIN ON -to DebugT0
 set_instance_assignment -name VIRTUAL_PIN ON -to DebugR0
-set_instance_assignment -name VIRTUAL_PIN ON -to DebugTXC
+set_instance_assignment -name VIRTUAL_PIN ON -to DebugK7
 set_instance_assignment -name VIRTUAL_PIN ON -to DebugAX0
 set_instance_assignment -name VIRTUAL_PIN ON -to DebugAX1
 set_instance_assignment -name VIRTUAL_PIN ON -to DebugR1
