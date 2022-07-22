@@ -15,11 +15,14 @@ module Ctrl_Module
 	output reg ALU_Src,
 	output reg Halt,
 	output reg Long_Imm,
-	output reg Change_Context
+	output reg Change_Context,
+	output reg [1:0] Draw_Select
 );
 
 always @ (Instruction)
 begin
+
+	Draw_Select <= 0;
 
 	case (Instruction[5:4])
 
@@ -216,7 +219,7 @@ begin
 					IO_Selection <= 3;
 					Reg_Write <= 0;
 					Branch <= 0;
-					ALU_Op <= 16;
+					ALU_Op <= 17;
 				end
 
 				4'b0111: //DWCH
@@ -225,16 +228,8 @@ begin
 					IO_Selection <= 3;
 					Reg_Write <= 0;
 					Branch <= 0;
-					ALU_Op <= 16;
-				end
-
-				4'b1000: //DWCN
-				begin
-					IO_Enable <= 1;
-					IO_Selection <= 3;
-					Reg_Write <= 0;
-					Branch <= 0;
-					ALU_Op <= 16;
+					Draw_Select <= 1;
+					ALU_Op <= 17;
 				end
 
 				default:
@@ -362,17 +357,6 @@ begin
 					IO_Enable <= 1;
 					IO_Selection <= 2;
 					Reg_Write <= 1;
-					Jump_R <= 0;
-					Jump_I <= 0;
-					Stack_Enable <= 0;
-					Stack_Write <= 0;
-				end
-
-				4'b1001: //DWCL
-				begin
-					IO_Enable <= 1;
-					IO_Selection <= 3;
-					Reg_Write <= 0;
 					Jump_R <= 0;
 					Jump_I <= 0;
 					Stack_Enable <= 0;

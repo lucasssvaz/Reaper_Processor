@@ -58,11 +58,11 @@ module Reg_Bank
     output signed [31:0] DebugRET,
     output signed [31:0] DebugBR,
     output signed [31:0] DebugCTX,
-    output signed [31:0] DebugK7,
-    output signed [31:0] DebugK8,
-    output signed [31:0] DebugK9,
+    output signed [31:0] DebugTXC,
+    output signed [31:0] DebugAX0,
     output signed [31:0] DebugAX1,
     output signed [31:0] DebugAX2,
+    output signed [31:0] DebugAX3,
     output signed [31:0] DebugCRT,
 
     input Reset,                //Makes sure Reg 0 is always 0
@@ -75,7 +75,8 @@ module Reg_Bank
     input [5:0] Reg_3,         //Third Register Selection (Read)
     output signed [31:0] Data_1,   	  //Data that will outputted by the Reg selected by Reg_1
     output signed [31:0] Data_2,       //Data that will outputted by the Reg selected by Reg_2
-    output signed [31:0] Data_3        //Data that will outputted by the Reg selected by Reg_3
+    output signed [31:0] Data_3,        //Data that will outputted by the Reg selected by Reg_3
+    output [31:0] Draw_Text_Color
 );
 
 reg [31:0] Aux_WD;
@@ -85,6 +86,7 @@ reg signed [31:0] RegBank[63:0];
 assign Data_1 = RegBank[Reg_1];
 assign Data_2 = RegBank[Reg_2];
 assign Data_3 = RegBank[Reg_3];
+assign Draw_Text_Color = RegBank[58];
 
 assign DebugZERO = RegBank[0];
 assign DebugT0 = RegBank[1];
@@ -144,14 +146,14 @@ assign DebugRA = RegBank[54];
 assign DebugRET = RegBank[55];
 assign DebugBR = RegBank[56];
 assign DebugCTX = RegBank[57];
-assign DebugK7 = RegBank[58];
-assign DebugK8 = RegBank[59];
-assign DebugK9 = RegBank[60];
-assign DebugAX1 = RegBank[61];
-assign DebugAX2 = RegBank[62];
+assign DebugTXC = RegBank[58];
+assign DebugAX0 = RegBank[59];
+assign DebugAX1 = RegBank[60];
+assign DebugAX2 = RegBank[61];
+assign DebugAX3 = RegBank[62];
 assign DebugCRT = RegBank[63];
 
-initial 
+initial
 begin
     RegBank[0] <= 0;
     RegBank[1] <= 0;
@@ -180,42 +182,42 @@ begin
     RegBank[24] <= 0;
     RegBank[25] <= 0;
     RegBank[26] <= 0;
-    RegBank[27] <= 0;  
-    RegBank[28] <= 0;  
-    RegBank[29] <= 0;  
-    RegBank[30] <= 0;  
-    RegBank[31] <= 0;  
-    RegBank[32] <= 0;  
-    RegBank[33] <= 0;  
-    RegBank[34] <= 0;  
-    RegBank[35] <= 0;  
-    RegBank[36] <= 0;  
-    RegBank[37] <= 0;  
-    RegBank[38] <= 0;  
-    RegBank[39] <= 0;  
-    RegBank[40] <= 0;  
-    RegBank[41] <= 0;  
-    RegBank[42] <= 0;  
-    RegBank[43] <= 0;  
-    RegBank[44] <= 0;  
-    RegBank[45] <= 0;  
-    RegBank[46] <= 0;  
-    RegBank[47] <= 0;  
-    RegBank[48] <= 0;  
-    RegBank[49] <= 0;  
-    RegBank[50] <= 0;  
-    RegBank[51] <= 0;  
-    RegBank[52] <= 0;  
-    RegBank[53] <= 0;  
-    RegBank[54] <= 0;  
-    RegBank[55] <= 0;  
-    RegBank[56] <= 0;  
-    RegBank[57] <= 0;  
-    RegBank[58] <= 0;  
-    RegBank[59] <= 0;  
-    RegBank[60] <= 0;  
-    RegBank[61] <= 0;  
-    RegBank[62] <= 0;  
+    RegBank[27] <= 0;
+    RegBank[28] <= 0;
+    RegBank[29] <= 0;
+    RegBank[30] <= 0;
+    RegBank[31] <= 0;
+    RegBank[32] <= 0;
+    RegBank[33] <= 0;
+    RegBank[34] <= 0;
+    RegBank[35] <= 0;
+    RegBank[36] <= 0;
+    RegBank[37] <= 0;
+    RegBank[38] <= 0;
+    RegBank[39] <= 0;
+    RegBank[40] <= 0;
+    RegBank[41] <= 0;
+    RegBank[42] <= 0;
+    RegBank[43] <= 0;
+    RegBank[44] <= 0;
+    RegBank[45] <= 0;
+    RegBank[46] <= 0;
+    RegBank[47] <= 0;
+    RegBank[48] <= 0;
+    RegBank[49] <= 0;
+    RegBank[50] <= 0;
+    RegBank[51] <= 0;
+    RegBank[52] <= 0;
+    RegBank[53] <= 0;
+    RegBank[54] <= 0;
+    RegBank[55] <= 0;
+    RegBank[56] <= 0;
+    RegBank[57] <= 0;
+    RegBank[58] <= 0;
+    RegBank[59] <= 0;
+    RegBank[60] <= 0;
+    RegBank[61] <= 0;
+    RegBank[62] <= 0;
     RegBank[63] <= 0;
 end
 

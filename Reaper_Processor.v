@@ -72,11 +72,11 @@ module Reaper_Processor
     output signed [31:0] DebugRET,
     output signed [31:0] DebugBR,
     output signed [31:0] DebugCTX,
-    output signed [31:0] DebugK7,
-    output signed [31:0] DebugK8,
-    output signed [31:0] DebugK9,
+    output signed [31:0] DebugTXC,
+    output signed [31:0] DebugAX0,
     output signed [31:0] DebugAX1,
     output signed [31:0] DebugAX2,
+    output signed [31:0] DebugAX3,
     output signed [31:0] DebugCRT,
 	output signed [31:0] Debug_7Seg,
 	output [7:0] Debug_Kb_Byte,
@@ -128,6 +128,8 @@ wire Raw_Button;
 wire Raw_Reset;
 wire Reg_Write;
 wire Reset;
+wire [1:0] Draw_Select;
+wire [31:0] Draw_Text_Color;
 wire signed [31:0] ALU_Data_3;
 wire signed [31:0] ALU_Result;
 wire signed [31:0] Data_1;
@@ -227,7 +229,8 @@ Ctrl_Module Ctrl_Module_0
 	.ALU_Src(ALU_Src),
 	.Halt(Halt),
 	.Long_Imm(Long_Imm),
-	.Change_Context(Change_Context)
+	.Change_Context(Change_Context),
+	.Draw_Select(Draw_Select)
 );
 
 Reg_Bank Reg_Bank_0
@@ -290,11 +293,11 @@ Reg_Bank Reg_Bank_0
 	.DebugRET(DebugRET),
 	.DebugBR(DebugBR),
 	.DebugCTX(DebugCTX),
-	.DebugK7(DebugK7),
-	.DebugK8(DebugK8),
-	.DebugK9(DebugK9),
+	.DebugTXC(DebugTXC),
+	.DebugAX0(DebugAX0),
 	.DebugAX1(DebugAX1),
 	.DebugAX2(DebugAX2),
+	.DebugAX3(DebugAX3),
 	.DebugCRT(DebugCRT),
 	.Reset(Reset),
 	.Slow_Clock(Slow_Clock),
@@ -306,7 +309,8 @@ Reg_Bank Reg_Bank_0
 	.Reg_3(Instruction[13:8]),
 	.Data_1(Data_1),
 	.Data_2(Data_2),
-	.Data_3(Data_3)
+	.Data_3(Data_3),
+	.Draw_Text_Color(Draw_Text_Color)
 );
 
 Extend_Imm Extend_Imm_0
@@ -385,7 +389,9 @@ IO_Module IO_Module_0
 	.VGA_Green(VGA_Green),
 	.VGA_Blue(VGA_Blue),
 	.VGA_Blank_N(VGA_Blank_N),
-	.VGA_Sync_N(VGA_Sync_N)
+	.VGA_Sync_N(VGA_Sync_N),
+	.Draw_Select(Draw_Select),
+	.Draw_Text_Color(Draw_Text_Color)
 );
 
 Mux #(.BITS(32)) Mux_Mem

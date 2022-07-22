@@ -25,15 +25,15 @@ module VGA_Signal_Generator
 	output reg VGA_Sync_N
 );
 
-localparam C_VERT_NUM_PIXELS  = 10'd480;
-localparam C_VERT_SYNC_START  = 10'd493;
-localparam C_VERT_SYNC_END    = 10'd494; //(C_VERT_SYNC_START + 2 - 1);
-localparam C_VERT_TOTAL_COUNT = 10'd525;
+localparam VERT_VISIBLE_PIXELS = 10'd480;
+localparam VERT_SYNC_START = 10'd493;
+localparam VERT_SYNC_END = 10'd494; //(VERT_SYNC_START + 2 - 1);
+localparam VERT_TOTAL_PIXELS = 10'd525;
 
-localparam C_HORZ_NUM_PIXELS  = 10'd640;
-localparam C_HORZ_SYNC_START  = 10'd659;
-localparam C_HORZ_SYNC_END    = 10'd754; //(C_HORZ_SYNC_START + 96 - 1);
-localparam C_HORZ_TOTAL_COUNT = 10'd800;
+localparam HORZ_VISIBLE_PIXELS = 10'd640;
+localparam HORZ_SYNC_START = 10'd659;
+localparam HORZ_SYNC_END = 10'd754; //(HORZ_SYNC_START + 96 - 1);
+localparam HORZ_TOTAL_PIXELS = 10'd800;
 
 reg VGA_HS_D1;
 reg VGA_VS_D1;
@@ -55,8 +55,8 @@ VGA_PLL VGA_Clk_Generator_0
 );
 
 assign VGA_Sync_N = 1'b1; //Should be tied to 1
-assign Counter_X_Clear = (Counter_X == (C_HORZ_TOTAL_COUNT-1));
-assign Counter_Y_Clear = (Counter_Y == (C_VERT_TOTAL_COUNT-1));
+assign Counter_X_Clear = (Counter_X == (HORZ_TOTAL_PIXELS-1));
+assign Counter_Y_Clear = (Counter_Y == (VERT_TOTAL_PIXELS-1));
 
 //--------------------------------------------------------
 
@@ -78,18 +78,18 @@ begin
 		Counter_Y <= 10'd0;
 	else if (Counter_X_Clear && Counter_Y_Clear)
 		Counter_Y <= 10'd0;
-	else if (Counter_X_Clear)		//Increment when x counter resets
+	else if (Counter_X_Clear) //Increment when x counter resets
 		Counter_Y <= Counter_Y + 1'b1;
 end
 
 always @(posedge VGA_Clk)
 begin
 	//- Sync Generator (ACTIVE LOW)
-	VGA_HS_D1 <= ~((Counter_X >= C_HORZ_SYNC_START) && (Counter_X <= C_HORZ_SYNC_END));
-	VGA_VS_D1 <= ~((Counter_Y >= C_VERT_SYNC_START) && (Counter_Y <= C_VERT_SYNC_END));
+	VGA_HS_D1 <= ~((Counter_X >= HORZ_SYNC_START) && (Counter_X <= HORZ_SYNC_END));
+	VGA_VS_D1 <= ~((Counter_Y >= VERT_SYNC_START) && (Counter_Y <= VERT_SYNC_END));
 
 	//- Current X and Y is valid pixel range
-	VGA_Blank_D1 <= ((Counter_X < C_HORZ_NUM_PIXELS) && (Counter_Y < C_VERT_NUM_PIXELS));
+	VGA_Blank_D1 <= ((Counter_X < HORZ_VISIBLE_PIXELS) && (Counter_Y < VERT_VISIBLE_PIXELS));
 
 	//- Add 1 cycle delay
 	VGA_HS <= VGA_HS_D1;

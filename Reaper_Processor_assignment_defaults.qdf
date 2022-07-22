@@ -326,7 +326,7 @@ set_global_assignment -name RESERVE_AVST_VALID_AFTER_CONFIGURATION "Use as regul
 set_global_assignment -name RESERVE_AVST_DATA15_THROUGH_DATA0_AFTER_CONFIGURATION "Use as regular IO"
 set_global_assignment -name RESERVE_AVST_DATA31_THROUGH_DATA16_AFTER_CONFIGURATION "Use as regular IO"
 set_global_assignment -name STRATIXIII_CONFIGURATION_SCHEME "Passive Serial"
-set_global_assignment -name MAX10FPGA_CONFIGURATION_SCHEME "Internal Configuration"
+set_global_assignment -name MAX20FPGA_CONFIGURATION_SCHEME "Internal Configuration"
 set_global_assignment -name CYCLONEIII_CONFIGURATION_SCHEME "Active Serial"
 set_global_assignment -name STRATIXII_CONFIGURATION_SCHEME "Passive Serial"
 set_global_assignment -name CYCLONEII_CONFIGURATION_SCHEME "Active Serial"

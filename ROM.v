@@ -2,7 +2,7 @@ module ROM
 #(parameter DATA_WIDTH=32, parameter ADDR_WIDTH=13)
 (
 	input [(ADDR_WIDTH-1):0] PC,
-	input Fast_Clock, 
+	input Fast_Clock,
 	output reg [(DATA_WIDTH-1):0] Instruction
 );
 

@@ -29,7 +29,9 @@ module IO_Module
 	output [7:0] VGA_Blue,
 	output VGA_Blank_N,
 	output VGA_Clk,
-	output VGA_Sync_N
+	output VGA_Sync_N,
+	input [1:0] Draw_Select,
+	input [31:0] Draw_Text_Color
 );
 
 // IO = 0 -> OUTPUT 7 SEG. DISPLAY
@@ -37,17 +39,42 @@ module IO_Module
 // IO = 2 -> INPUT PS2 KEYBOARD
 // IO = 3 -> OUTPUT VGA
 
+typedef enum {READY, ONGOING} Char_Write_Op;
+
 reg State = 0;
 wire Out_7Seg;
 wire In_Sw_Op;
 wire In_Kb_Op;
 wire Out_VGA;
+wire [31:0] Draw_X;
+wire [31:0] Draw_Y;
+wire [31:0] Draw_Color;
+reg [63:0] Bitmap_Char [127:0];
+reg [6:0] Char_Counter;
+reg Char_Pixel;
+wire Out_VGA_Char;
+Char_Write_Op VGA_Char_Status;
+wire Enable_Draw;
+
+initial
+begin
+	$readmemh("ASCII.txt", Bitmap_Char, 127, 0);
+	Char_Counter = 6'b0;
+	VGA_Char_Status = READY;
+end
 
 assign Out_7Seg = (Enable & (IO == 0));
 assign In_Sw_Op = (Enable & (IO == 1));
 assign In_Kb_Op = (Enable & (IO == 2));
 assign Out_VGA = (Enable & (IO == 3));
 assign Debug_7Seg = Data_1;
+
+assign Draw_X = (Draw_Select == 1) ? Data_1 + Char_Counter%8 : Data_1;
+assign Draw_Y = (Draw_Select == 1) ? Data_2 + Char_Counter/8 : Data_2;
+assign Draw_Color = (Draw_Select == 1) ? Draw_Text_Color : Data_3;
+assign Char_Pixel = Bitmap_Char[Data_3][Char_Counter];
+assign Out_VGA_Char = Out_VGA & (Draw_Select == 1);
+assign Enable_Draw = (Out_VGA & (Draw_Select == 0)) | (Out_VGA_Char & Char_Pixel);
 
 VGA_Image_Processor VGA_Image_Processor_0
 (
@@ -62,10 +89,10 @@ VGA_Image_Processor VGA_Image_Processor_0
 	.VGA_Blue(VGA_Blue),
 	.VGA_Blank_N(VGA_Blank_N),
 	.VGA_Sync_N(VGA_Sync_N),
-	.Enable_Draw(Out_VGA),
-	.Draw_X(Data_1),
-	.Draw_Y(Data_2),
-	.Draw_Color(Data_3)
+	.Enable_Draw(Enable_Draw),
+	.Draw_X(Draw_X),
+	.Draw_Y(Draw_Y),
+	.Draw_Color(Draw_Color)
 );
 
 //----------------------------------------------
@@ -119,6 +146,13 @@ begin
 	begin
 		Interrupt = 0;
 		State = 0;
+		Char_Counter = 0;
+		VGA_Char_Status = READY;
+	end
+	else if (Out_VGA_Char)
+	begin
+		VGA_Char_Status = ONGOING;
+		Char_Counter = Char_Counter + 7'b1;
 	end
 	else if (In_Sw_Op)
 	begin
@@ -141,6 +175,14 @@ begin
 		begin
 			Interrupt = 1;
 			State = 1;
+		end
+	end
+	else if (VGA_Char_Status == ONGOING)
+	begin
+		if (Char_Counter == 64)
+		begin
+			VGA_Char_Status = READY;
+			Char_Counter = 0;
 		end
 	end
 end
