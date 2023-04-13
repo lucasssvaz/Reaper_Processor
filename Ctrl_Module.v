@@ -16,13 +16,12 @@ module Ctrl_Module
 	output reg Halt,
 	output reg Long_Imm,
 	output reg Change_Context,
-	output reg [1:0] Draw_Select
+	output reg [1:0] Draw_Select,
+	output reg RNG_Enable
 );
 
 always @ (Instruction)
 begin
-
-	Draw_Select <= 0;
 
 	case (Instruction[5:4])
 
@@ -44,6 +43,8 @@ begin
 			Halt <= 0;
 			Long_Imm <= 0;
 			Change_Context <= 0;
+			Draw_Select <= 0;
+			RNG_Enable <= 0;
 
 			case (Instruction[3:0])
 
@@ -174,6 +175,8 @@ begin
 			Halt <= 0;
 			Long_Imm <= 0;
 			Change_Context <= 0;
+			Draw_Select <= 0;
+			RNG_Enable <= 0;
 
 			case (Instruction[3:0])
 
@@ -260,6 +263,8 @@ begin
 			Halt <= 0;
 			Long_Imm <= 1;
 			Change_Context <= 0;
+			Draw_Select <= 0;
+			RNG_Enable <= 0;
 
 			case (Instruction[3:0])
 
@@ -352,7 +357,7 @@ begin
 					Change_Context <= 1;
 				end
 
-				4'b1000: //GETC
+				4'b1000: //GETCH
 				begin
 					IO_Enable <= 1;
 					IO_Selection <= 2;
@@ -361,6 +366,18 @@ begin
 					Jump_I <= 0;
 					Stack_Enable <= 0;
 					Stack_Write <= 0;
+				end
+
+				4'b1001: //RNG
+				begin
+					IO_Enable <= 0;
+					IO_Selection <= 0;
+					Reg_Write <= 1;
+					Jump_R <= 0;
+					Jump_I <= 0;
+					Stack_Enable <= 0;
+					Stack_Write <= 0;
+					RNG_Enable <= 1;
 				end
 
 				default:
@@ -396,6 +413,8 @@ begin
 			Halt <= 0;
 			Long_Imm <= 0;
 			Change_Context <= 0;
+			Draw_Select <= 0;
+			RNG_Enable <= 0;
 
 			case (Instruction[3:0])
 
@@ -549,6 +568,9 @@ begin
 			ALU_Src <= 0;
 			Halt <= 0;
 			Long_Imm <= 0;
+			Change_Context <= 0;
+			Draw_Select <= 0;
+			RNG_Enable <= 0;
 
 		end
 	endcase

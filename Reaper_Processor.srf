@@ -15,6 +15,8 @@
 { "" "" "" "Verilog HDL assignment warning at VGA_Image_Processor.v(100): truncated value with size 9 to match size of target (8)" {  } {  } 0 10230 "" 0 0 "Design Software" 0 -1 0 ""}
 { "" "" "" "Verilog HDL assignment warning at VGA_Image_Processor.v(101): truncated value with size 9 to match size of target (8)" {  } {  } 0 10230 "" 0 0 "Design Software" 0 -1 0 ""}
 { "" "" "" "Pin \"VGA_Sync_N\" is stuck at VCC" {  } {  } 0 13410 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Synthesized away node \"ALU:ALU_0\|lpm_mult:Mult0\|mult_46t:auto_generated\|mac_mult7\"" {  } {  } 0 14320 "" 0 0 "Design Software" 0 -1 0 ""}
+{ "" "" "" "Synthesized away node \"ALU:ALU_0\|lpm_mult:Mult0\|mult_46t:auto_generated\|mac_out8\"" {  } {  } 0 14320 "" 0 0 "Design Software" 0 -1 0 ""}
 { "" "" "" "*" {  } {  } 0 10850 "" 0 0 "Design Software" 0 -1 0 ""}
 { "" "" "" "*" {  } {  } 0 10030 "" 0 0 "Design Software" 0 -1 0 ""}
 { "" "" "" "*" {  } {  } 0 18236 "" 0 0 "Design Software" 0 -1 0 ""}

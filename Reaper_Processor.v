@@ -79,7 +79,6 @@ module Reaper_Processor
     output signed [31:0] DebugAX3,
     output signed [31:0] DebugCRT,
 	output signed [31:0] Debug_7Seg,
-	output [7:0] Debug_Kb_Byte,
 	output [12:0] PC,
 	output [31:0] Instruction,
 	output Change_Context,
@@ -127,15 +126,18 @@ wire Mem_Write;
 wire Raw_Button;
 wire Raw_Reset;
 wire Reg_Write;
+wire RNG_Enable;
 wire Reset;
 wire [1:0] Draw_Select;
 wire [31:0] Draw_Text_Color;
+wire [31:0] Rand_Out;
 wire signed [31:0] ALU_Data_3;
 wire signed [31:0] ALU_Result;
 wire signed [31:0] Data_1;
 wire signed [31:0] Data_2;
 wire signed [31:0] Data_3;
 wire signed [31:0] Data_From_Mem;
+wire signed [31:0] Mux_IO_to_Mem_Data;
 wire signed [31:0] Data_In;
 wire signed [31:0] Data_To_Reg;
 wire signed [31:0] Mem_Out;
@@ -147,7 +149,6 @@ wire Stack_Write;
 
 //======================================================================================
 
-assign Debug_Kb_Byte = Kb_Byte;
 assign Reset = ~Raw_Reset_I;
 assign Button = ~Raw_Button_I;
 
@@ -230,7 +231,8 @@ Ctrl_Module Ctrl_Module_0
 	.Halt(Halt),
 	.Long_Imm(Long_Imm),
 	.Change_Context(Change_Context),
-	.Draw_Select(Draw_Select)
+	.Draw_Select(Draw_Select),
+	.RNG_Enable(RNG_Enable)
 );
 
 Reg_Bank Reg_Bank_0
@@ -351,13 +353,6 @@ RAM RAM_0
 	.Read_Data(Mem_Out)
 );
 
-PS2 PS2_0
-(
-	.KB_Clk(PS2_KB_Clk),
-	.KB_Data(PS2_KB_Data),
-	.Kb_Byte(Kb_Byte)
-);
-
 IO_Module IO_Module_0
 (
 	.Slow_Clock(Slow_Clock),
@@ -381,7 +376,6 @@ IO_Module IO_Module_0
 	.Display5(Display5),
 	.Display6(Display6),
 	.Display7(Display7),
-	.Kb_Byte(Kb_Byte),
 	.VGA_HS(VGA_HS),
 	.VGA_VS(VGA_VS),
 	.VGA_Clk(VGA_Clk),
@@ -391,7 +385,15 @@ IO_Module IO_Module_0
 	.VGA_Blank_N(VGA_Blank_N),
 	.VGA_Sync_N(VGA_Sync_N),
 	.Draw_Select(Draw_Select),
-	.Draw_Text_Color(Draw_Text_Color)
+	.Draw_Text_Color(Draw_Text_Color),
+	.KB_Clk(PS2_KB_Clk),
+	.KB_Data(PS2_KB_Data)
+);
+
+RNG RNG_0
+(
+	.Slow_Clock(Slow_Clock),
+	.Rand_Out(Rand_Out)
 );
 
 Mux #(.BITS(32)) Mux_Mem
@@ -415,6 +417,14 @@ Mux #(.BITS(32)) Mux_IO_to_Mem
 	.Switch(IO_Enable),
 	.Data_0(Data_From_Mem),
 	.Data_1(Data_In),
+	.Data_Out(Mux_IO_to_Mem_Data)
+);
+
+Mux #(.BITS(32)) Mux_RNG_to_Mem
+(
+	.Switch(RNG_Enable),
+	.Data_0(Mux_IO_to_Mem_Data),
+	.Data_1(Rand_Out),
 	.Data_Out(Reg_Write_Data)
 );
 

@@ -42,7 +42,6 @@ localparam FB_ADDRW = 15;
 localparam FB_COLOR_BITS = 9;
 localparam COLOR_FB_TO_VGA_FACTOR = 36;
 
-wire Inv_VGA_Clk = ~VGA_Clk;
 wire Inv_Slow_Clock = ~Slow_Clock;
 wire [9:0] VGA_X;
 wire [9:0] VGA_Y; //Bit 9 is unused
@@ -80,6 +79,8 @@ VGA_Signal_Generator VGA_Signal_Generator_0
 	.VGA_Blank_N(VGA_Blank_N),
 	.VGA_Sync_N(VGA_Sync_N)
 );
+
+//TODO: VSync
 
 VGA_Frame_Buffer Frame_Buffer_160_120_9
 (

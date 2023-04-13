@@ -41,7 +41,7 @@ set_global_assignment -name DEVICE EP4CE115F29C7
 set_global_assignment -name TOP_LEVEL_ENTITY Reaper_Processor
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 18.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "09:45:46  DECEMBER 23, 2021"
-set_global_assignment -name LAST_QUARTUS_VERSION "21.1.0 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "21.1.1 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
@@ -237,7 +237,6 @@ set_instance_assignment -name VIRTUAL_PIN ON -to DebugZERO
 set_location_assignment PIN_H19 -to Halt
 set_location_assignment PIN_G6 -to PS2_KB_Clk
 set_location_assignment PIN_H5 -to PS2_KB_Data
-set_instance_assignment -name VIRTUAL_PIN ON -to Debug_Kb_Byte
 set_instance_assignment -name VIRTUAL_PIN ON -to Slow_Clock
 set_instance_assignment -name VIRTUAL_PIN ON -to Change_Context
 set_global_assignment -name ENABLE_SIGNALTAP ON
@@ -281,6 +280,8 @@ set_global_assignment -name ALLOW_REGISTER_DUPLICATION ON
 set_global_assignment -name MUX_RESTRUCTURE ON
 set_global_assignment -name REMOVE_DUPLICATE_REGISTERS ON
 set_global_assignment -name ALLOW_REGISTER_RETIMING ON
+set_global_assignment -name FLOW_ENABLE_IO_ASSIGNMENT_ANALYSIS ON
+set_global_assignment -name VERILOG_FILE RNG.v
 set_global_assignment -name VERILOG_FILE VGA_Image_Processor.v
 set_global_assignment -name VERILOG_FILE VGA_Signal_Generator.v
 set_global_assignment -name VERILOG_FILE Mux.v
@@ -300,6 +301,4 @@ set_global_assignment -name VERILOG_FILE ALU.v
 set_global_assignment -name VECTOR_WAVEFORM_FILE Waveform.vwf
 set_global_assignment -name QIP_FILE VGA_PLL.qip
 set_global_assignment -name QIP_FILE VGA_Frame_Buffer.qip
-set_global_assignment -name FLOW_ENABLE_IO_ASSIGNMENT_ANALYSIS ON
-set_global_assignment -name QIP_FILE Fast_Clock.qip
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

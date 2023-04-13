@@ -84,14 +84,14 @@ end
 
 always @(posedge VGA_Clk)
 begin
-	//- Sync Generator (ACTIVE LOW)
+	//Sync Generator (ACTIVE LOW)
 	VGA_HS_D1 <= ~((Counter_X >= HORZ_SYNC_START) && (Counter_X <= HORZ_SYNC_END));
 	VGA_VS_D1 <= ~((Counter_Y >= VERT_SYNC_START) && (Counter_Y <= VERT_SYNC_END));
 
-	//- Current X and Y is valid pixel range
+	//Current X and Y is valid pixel range
 	VGA_Blank_D1 <= ((Counter_X < HORZ_VISIBLE_PIXELS) && (Counter_Y < VERT_VISIBLE_PIXELS));
 
-	//- Add 1 cycle delay
+	//Add 1 cycle delay
 	VGA_HS <= VGA_HS_D1;
 	VGA_VS <= VGA_VS_D1;
 	VGA_Blank_N <= VGA_Blank_D1;

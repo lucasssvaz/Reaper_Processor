@@ -21,7 +21,6 @@ module IO_Module
 	output reg [6:0] Display5,
 	output reg [6:0] Display6,
 	output reg [6:0] Display7,
-	input [7:0] Kb_Byte,
 	output VGA_HS,
 	output VGA_VS,
 	output [7:0] VGA_Red,
@@ -31,7 +30,9 @@ module IO_Module
 	output VGA_Clk,
 	output VGA_Sync_N,
 	input [1:0] Draw_Select,
-	input [31:0] Draw_Text_Color
+	input [31:0] Draw_Text_Color,
+	input KB_Clk,
+	input KB_Data
 );
 
 // IO = 0 -> OUTPUT 7 SEG. DISPLAY
@@ -41,6 +42,7 @@ module IO_Module
 
 typedef enum {READY, ONGOING} Char_Write_Op;
 
+wire [7:0] Kb_Byte;
 reg State = 0;
 wire Out_7Seg;
 wire In_Sw_Op;
@@ -93,6 +95,13 @@ VGA_Image_Processor VGA_Image_Processor_0
 	.Draw_X(Draw_X),
 	.Draw_Y(Draw_Y),
 	.Draw_Color(Draw_Color)
+);
+
+PS2 PS2_0
+(
+	.KB_Clk(KB_Clk),
+	.KB_Data(KB_Data),
+	.Kb_Byte(Kb_Byte)
 );
 
 //----------------------------------------------

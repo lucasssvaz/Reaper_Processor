@@ -4,6 +4,8 @@ module Extend_Imm (
 	output reg signed [31:0] Out_Imm
 );
 
+//Range = [-524288, 524287]
+
 always @ (In_Imm or Long_Imm)
 begin
 	if (Long_Imm)
