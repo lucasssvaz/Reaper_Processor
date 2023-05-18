@@ -239,7 +239,7 @@ set_location_assignment PIN_G6 -to PS2_KB_Clk
 set_location_assignment PIN_H5 -to PS2_KB_Data
 set_instance_assignment -name VIRTUAL_PIN ON -to Slow_Clock
 set_instance_assignment -name VIRTUAL_PIN ON -to Change_Context
-set_global_assignment -name ENABLE_SIGNALTAP ON
+set_global_assignment -name ENABLE_SIGNALTAP OFF
 set_global_assignment -name USE_SIGNALTAP_FILE output_files/stp1.stp
 set_location_assignment PIN_C13 -to VGA_VS
 set_location_assignment PIN_G13 -to VGA_HS
