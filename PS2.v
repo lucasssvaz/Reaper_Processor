@@ -4,12 +4,16 @@ module PS2
 	input KB_Clk,
 	input KB_Data,
 	output reg [7:0] Kb_Byte
+	//output reg [7:0] Data_Recv,
+	//output reg [7:0] Last_Data,
+	//output reg [23:0] Recv_Buffer
 );
 
-reg [7:0] Recv_Buffer;
-reg [7:0] Data_Recv;
 reg [3:0] Bit_Counter;
 reg Flag_Done;
+reg [7:0] Data_Recv;
+reg [7:0] Last_Data;
+reg [23:0] Recv_Buffer;
 
 localparam [7:0] RELEASE_BIT = 8'hF0;
 
@@ -20,6 +24,7 @@ begin
 	Recv_Buffer <= RELEASE_BIT;
 	Data_Recv <= RELEASE_BIT;
 	Kb_Byte <= RELEASE_BIT;
+	Last_Data <= 8'hF1;
 end
 
 always @ (negedge KB_Clk)
@@ -41,15 +46,22 @@ begin
 	if(Bit_Counter <= 9)
 		Bit_Counter <= Bit_Counter + 4'b1;
 	else if(Bit_Counter == 10)
+	begin
 		Bit_Counter <= 0;
+	end
 end
 
 always @ (posedge Flag_Done)
-begin
-	if(Recv_Buffer == RELEASE_BIT)
-		Kb_Byte <= Data_Recv;
-	else
- 		Data_Recv <= Recv_Buffer;
+begin	
+	Data_Recv = Recv_Buffer;
+	
+	if(Data_Recv != RELEASE_BIT) begin
+		Kb_Byte = Data_Recv;
+		Last_Data = Data_Recv;
+	end
+	else begin
+		Kb_Byte = RELEASE_BIT;
+		Last_Data = RELEASE_BIT;
+	end
 end
-
 endmodule

@@ -56,7 +56,7 @@ set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name TIMING_ANALYZER_MULTICORNER_ANALYSIS ON
 set_global_assignment -name SMART_RECOMPILE ON
 set_global_assignment -name OPTIMIZATION_MODE "AGGRESSIVE AREA"
-set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE AREA
+set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE SPEED
 set_global_assignment -name OPTIMIZE_POWER_DURING_SYNTHESIS OFF
 set_global_assignment -name ROUTER_TIMING_OPTIMIZATION_LEVEL MINIMUM
 set_global_assignment -name PLACEMENT_EFFORT_MULTIPLIER 0.1
@@ -72,7 +72,7 @@ set_global_assignment -name PHYSICAL_SYNTHESIS_EFFORT FAST
 set_global_assignment -name OPTIMIZE_FOR_METASTABILITY OFF
 set_global_assignment -name ALM_REGISTER_PACKING_EFFORT LOW
 set_global_assignment -name FINAL_PLACEMENT_OPTIMIZATION NEVER
-set_global_assignment -name FITTER_AGGRESSIVE_ROUTABILITY_OPTIMIZATION AUTOMATICALLY
+set_global_assignment -name FITTER_AGGRESSIVE_ROUTABILITY_OPTIMIZATION NEVER
 set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC_FOR_AREA OFF
 set_location_assignment PIN_AB28 -to Raw_Input[0]
 set_location_assignment PIN_AC28 -to Raw_Input[1]
@@ -234,7 +234,6 @@ set_instance_assignment -name VIRTUAL_PIN ON -to DebugT37
 set_instance_assignment -name VIRTUAL_PIN ON -to DebugT38
 set_instance_assignment -name VIRTUAL_PIN ON -to DebugT39
 set_instance_assignment -name VIRTUAL_PIN ON -to DebugZERO
-set_location_assignment PIN_H19 -to Halt
 set_location_assignment PIN_G6 -to PS2_KB_Clk
 set_location_assignment PIN_H5 -to PS2_KB_Data
 set_instance_assignment -name VIRTUAL_PIN ON -to Slow_Clock
@@ -301,4 +300,16 @@ set_global_assignment -name VERILOG_FILE ALU.v
 set_global_assignment -name VECTOR_WAVEFORM_FILE Waveform.vwf
 set_global_assignment -name QIP_FILE VGA_PLL.qip
 set_global_assignment -name QIP_FILE VGA_Frame_Buffer.qip
+set_location_assignment PIN_G19 -to Data_In[0]
+set_location_assignment PIN_F19 -to Data_In[1]
+set_location_assignment PIN_E19 -to Data_In[2]
+set_location_assignment PIN_F21 -to Data_In[3]
+set_location_assignment PIN_F18 -to Data_In[4]
+set_location_assignment PIN_E18 -to Data_In[5]
+set_location_assignment PIN_J19 -to Data_In[6]
+set_location_assignment PIN_H19 -to Data_In[7]
+set_location_assignment PIN_J17 -to Data_In[8]
+set_location_assignment PIN_G17 -to Data_In[9]
+set_location_assignment PIN_J15 -to Data_In[10]
+set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

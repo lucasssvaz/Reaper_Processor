@@ -46,10 +46,17 @@ end
 
 always @ (posedge Flag_Done)
 begin
+	//if(Recv_Buffer == RELEASE_BIT)
+		//Kb_Byte <= Data_Recv;
+	//else
+ 		//Data_Recv <= Recv_Buffer;
+
 	if(Recv_Buffer == RELEASE_BIT)
-		Kb_Byte <= Data_Recv;
+		Kb_Byte <= RELEASE_BIT;
 	else
- 		Data_Recv <= Recv_Buffer;
+ 		Kb_Byte <= Recv_Buffer;
+		
+	//Kb_Byte <= Recv_Buffer;
 end
 
 endmodule

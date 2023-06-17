@@ -95,7 +95,8 @@ module Reaper_Processor
 	output [7:0] VGA_Blue,
 	output VGA_Blank_N,
 	output VGA_Clk,
-	output VGA_Sync_N
+	output VGA_Sync_N,
+	output [31:0] Data_In
 );
 
 
@@ -138,7 +139,7 @@ wire signed [31:0] Data_2;
 wire signed [31:0] Data_3;
 wire signed [31:0] Data_From_Mem;
 wire signed [31:0] Mux_IO_to_Mem_Data;
-wire signed [31:0] Data_In;
+//wire signed [31:0] Data_In;
 wire signed [31:0] Data_To_Reg;
 wire signed [31:0] Mem_Out;
 wire signed [31:0] Out_Imm;
