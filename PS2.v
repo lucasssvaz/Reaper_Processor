@@ -17,8 +17,7 @@ reg [23:0] Recv_Buffer;
 
 localparam [7:0] RELEASE_BIT = 8'hF0;
 
-initial
-begin
+initial begin
 	Bit_Counter <= 4'b0;
 	Flag_Done <= 1'b0;
 	Recv_Buffer <= RELEASE_BIT;
@@ -27,8 +26,7 @@ begin
 	Last_Data <= 8'hF1;
 end
 
-always @ (negedge KB_Clk)
-begin
+always @ (negedge KB_Clk) begin
 	case(Bit_Counter)
 		0: ; //Start bit
 		1: Recv_Buffer[0] <= KB_Data;
@@ -51,17 +49,13 @@ begin
 	end
 end
 
-always @ (posedge Flag_Done)
-begin	
-	Data_Recv = Recv_Buffer;
+always @ (posedge Flag_Done) begin
+	Data_Recv <= Recv_Buffer;
 	
-	if(Data_Recv != RELEASE_BIT) begin
-		Kb_Byte = Data_Recv;
-		Last_Data = Data_Recv;
+	if(Data_Recv != Last_Data) begin
+		Kb_Byte <= Data_Recv;
 	end
-	else begin
-		Kb_Byte = RELEASE_BIT;
-		Last_Data = RELEASE_BIT;
-	end
+	
+	Last_Data <= Data_Recv;
 end
 endmodule
