@@ -6,11 +6,12 @@ module ROM
 	output reg [(DATA_WIDTH-1):0] Instruction
 );
 
-	reg [DATA_WIDTH-1:0] rom[1023:0]; //1024 per process
+	reg [DATA_WIDTH-1:0] rom[2047:0]; //1024 per process
 
 	initial
 	begin
 		$readmemb("PONG.txt", rom, 0, 1023);
+		$readmemb("PONG2.txt", rom, 1024, 2047);
 	end
 
 	always @ (posedge Fast_Clock)
