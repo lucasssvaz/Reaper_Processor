@@ -50,7 +50,7 @@ always @ (negedge KB_Clk) begin
 end
 
 always @ (posedge Flag_Done) begin
-	Data_Recv <= Recv_Buffer;
+	Data_Recv = Recv_Buffer;
 	
 	if(Data_Recv != Last_Data) begin
 		Kb_Byte <= Data_Recv;
